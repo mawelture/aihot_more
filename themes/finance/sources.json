@@ -1,0 +1,166 @@
+{
+    "sources": [
+        {
+            "id": "rss-cls-telegraph",
+            "name": "财联社电报",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://rsshub.example/cls/telegraph",
+                "_aihot": {
+                    "initialBackfillLimit": 8
+                }
+            },
+            "tier": "T1",
+            "owner_entity_id": "cls",
+            "participation_mode": "editorial",
+            "interval_minutes": 5,
+            "tags": ["快讯", "A股", "政策"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-10jqka-realtimenews",
+            "name": "同花顺7x24快讯",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://rsshub.example/10jqka/realtimenews",
+                "_aihot": {
+                    "initialBackfillLimit": 8
+                }
+            },
+            "tier": "T1",
+            "owner_entity_id": "10jqka",
+            "participation_mode": "editorial",
+            "interval_minutes": 5,
+            "tags": ["快讯", "A股", "市场"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-wallstreetcn-live",
+            "name": "华尔街见闻实时快讯",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://rsshub.example/wallstreetcn/live",
+                "_aihot": {
+                    "initialBackfillLimit": 8
+                }
+            },
+            "tier": "T1",
+            "owner_entity_id": "wallstreetcn",
+            "participation_mode": "editorial",
+            "interval_minutes": 5,
+            "tags": ["宏观", "A股", "快讯"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-eastmoney-report-strategy",
+            "name": "东方财富策略研报",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://rsshub.example/eastmoney/report/strategyreport",
+                "_aihot": {
+                    "initialBackfillLimit": 5
+                }
+            },
+            "tier": "T2",
+            "owner_entity_id": "eastmoney",
+            "participation_mode": "editorial",
+            "interval_minutes": 120,
+            "tags": ["研报", "策略", "A股"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-caixin-latest",
+            "name": "财新网最新",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://rsshub.example/caixin/latest",
+                "_aihot": {
+                    "initialBackfillLimit": 5
+                }
+            },
+            "tier": "T2",
+            "owner_entity_id": "caixin",
+            "participation_mode": "editorial",
+            "interval_minutes": 30,
+            "tags": ["深度", "宏观", "市场"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-yicai-headline",
+            "name": "第一财经头条",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://rsshub.example/yicai/headline",
+                "_aihot": {
+                    "initialBackfillLimit": 5
+                }
+            },
+            "tier": "T2",
+            "owner_entity_id": "yicai",
+            "participation_mode": "editorial",
+            "interval_minutes": 30,
+            "tags": ["头条", "宏观", "A股"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-nfra",
+            "name": "国家金融监督管理总局",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://rsshub.example/gov/nfra",
+                "_aihot": {
+                    "initialBackfillLimit": 5
+                }
+            },
+            "tier": "T2",
+            "owner_entity_id": "nfra",
+            "participation_mode": "editorial",
+            "interval_minutes": 60,
+            "tags": ["监管", "政策", "银行"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-hkex-news",
+            "name": "港交所新闻稿",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://www.hkex.com.hk/Services/RSS-Feeds/News-Releases?sc_lang=zh-HK",
+                "_aihot": {
+                    "initialBackfillLimit": 5
+                }
+            },
+            "tier": "T2",
+            "owner_entity_id": "hkex",
+            "participation_mode": "editorial",
+            "interval_minutes": 60,
+            "tags": ["交易所", "港股", "新闻"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-sec-press",
+            "name": "美国证监会新闻稿",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://www.sec.gov/news/pressreleases.rss",
+                "_aihot": {
+                    "initialBackfillLimit": 5
+                }
+            },
+            "tier": "T2",
+            "owner_entity_id": "sec",
+            "participation_mode": "editorial",
+            "interval_minutes": 60,
+            "tags": ["监管", "美股", "政策"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        }
+    ]
+}
