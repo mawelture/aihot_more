@@ -17,7 +17,7 @@ test('publication theme scope defaults to ai and distinguishes the same article 
   const { publicationIdentity } = await import('../packages/backend/src/publication/publish.ts');
   assert.equal(themeIdOf(undefined), 'ai');
   assert.deepEqual(publicationIdentity('ai', 'article-1'), { themeId: 'ai', articleId: 'article-1' });
-  assert.notDeepEqual(publicationIdentity('ai', 'article-1'), publicationIdentity('finance', 'article-1'));
+  assert.notDeepEqual(publicationIdentity('ai', 'article-1'), publicationIdentity('macro', 'article-1'));
 });
 
 test('publication-ledger theme migrations add theme scope columns', () => {
@@ -37,9 +37,9 @@ test('non-default themes store publication state in dedicated shadow tables', as
   assert.equal(publicationStorageForTheme('ai').publicationsTable, 'publications');
   assert.equal(publicationStorageForTheme('ai').selectedStateTable, 'selected_state');
   assert.equal(publicationStorageForTheme('ai').poolSearchTable, 'pool_search');
-  assert.equal(publicationStorageForTheme('finance').publicationsTable, 'theme_publications');
-  assert.equal(publicationStorageForTheme('finance').selectedStateTable, 'theme_selected_state');
-  assert.equal(publicationStorageForTheme('finance').poolSearchTable, 'theme_pool_search');
+  assert.equal(publicationStorageForTheme('macro').publicationsTable, 'theme_publications');
+  assert.equal(publicationStorageForTheme('macro').selectedStateTable, 'theme_selected_state');
+  assert.equal(publicationStorageForTheme('macro').poolSearchTable, 'theme_pool_search');
 });
 
 test('theme publication shadow table migrations exist', () => {
@@ -57,8 +57,8 @@ test('theme publication shadow table migrations exist', () => {
 test('selected-ledger scope keys default to ai and vary by theme', async () => {
   const { ledgerEpochSettingKey } = await import('../packages/backend/src/publication/v1.ts');
   assert.equal(ledgerEpochSettingKey(undefined), 'selected_ledger_epoch:ai');
-  assert.equal(ledgerEpochSettingKey('finance'), 'selected_ledger_epoch:finance');
-  assert.notEqual(ledgerEpochSettingKey('ai'), ledgerEpochSettingKey('finance'));
+  assert.equal(ledgerEpochSettingKey('macro'), 'selected_ledger_epoch:macro');
+  assert.notEqual(ledgerEpochSettingKey('ai'), ledgerEpochSettingKey('macro'));
 });
 
 
@@ -68,8 +68,8 @@ test('admin content publication correction and search branch to theme-specific p
     themeId: 'ai',
     publicationsTable: 'publications',
   });
-  assert.deepEqual(adminPublicationScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(adminPublicationScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
   });
 });
@@ -83,8 +83,8 @@ test('story and timeline publication reads branch to theme-specific publication 
     publicationsTable: 'publications',
     signalsThemeScoped: false,
   });
-  assert.deepEqual(storyReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(storyReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
     signalsThemeScoped: true,
   });
@@ -92,8 +92,8 @@ test('story and timeline publication reads branch to theme-specific publication 
     themeId: 'ai',
     publicationsTable: 'publications',
   });
-  assert.deepEqual(timelineReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(timelineReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
   });
 });
@@ -105,8 +105,8 @@ test('public hot read branches to theme-specific publication storage', async () 
     themeId: 'ai',
     publicationsTable: 'publications',
   });
-  assert.deepEqual(publicHotScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(publicHotScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
   });
 });
@@ -119,16 +119,16 @@ test('story text and topic reads branch to theme-specific publication storage', 
     themeId: 'ai',
     publicationsTable: 'publications',
   });
-  assert.deepEqual(storyTextReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(storyTextReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
   });
   assert.deepEqual(topicReadScope('ai'), {
     themeId: 'ai',
     publicationsTable: 'publications',
   });
-  assert.deepEqual(topicReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(topicReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
   });
 });
@@ -140,8 +140,8 @@ test('item-level public reads branch to theme-specific publication storage', asy
     themeId: 'ai',
     publicationsTable: 'publications',
   });
-  assert.deepEqual(itemReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(itemReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
   });
 });
@@ -155,8 +155,8 @@ test('site stats and rss item feeds branch to theme-specific publication/report 
     publicationsTable: 'publications',
     reportsTable: 'reports',
   });
-  assert.deepEqual(siteStatsReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(siteStatsReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
     reportsTable: 'theme_reports',
   });
@@ -165,8 +165,8 @@ test('site stats and rss item feeds branch to theme-specific publication/report 
     publicationsTable: 'publications',
     reportsTable: 'reports',
   });
-  assert.deepEqual(feedReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(feedReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
     reportsTable: 'theme_reports',
   });
@@ -181,8 +181,8 @@ test('detail, pool, and sitemap reads branch to theme-specific publication/repor
     themeId: 'ai',
     publicationsTable: 'publications',
   });
-  assert.deepEqual(detailReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(detailReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
   });
   assert.deepEqual(poolReadScope('ai'), {
@@ -190,8 +190,8 @@ test('detail, pool, and sitemap reads branch to theme-specific publication/repor
     publicationsTable: 'publications',
     poolSearchTable: 'pool_search',
   });
-  assert.deepEqual(poolReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(poolReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
     poolSearchTable: 'theme_pool_search',
   });
@@ -200,8 +200,8 @@ test('detail, pool, and sitemap reads branch to theme-specific publication/repor
     publicationsTable: 'publications',
     reportsTable: 'reports',
   });
-  assert.deepEqual(sitemapReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(sitemapReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
     reportsTable: 'theme_reports',
   });
@@ -213,7 +213,7 @@ test('availability, og, followups, and reading-group reads branch to theme-speci
   const { ogReadScope } = await import('../packages/backend/src/publication/og.ts');
   const { followupsReadScope } = await import('../packages/backend/src/publication/followups.ts');
   const { groupReportsReadScope } = await import('../packages/backend/src/publication/groups.ts');
-  for (const [themeId, publicationsTable] of [['ai', 'publications'], ['finance', 'theme_publications']] as const) {
+  for (const [themeId, publicationsTable] of [['ai', 'publications'], ['macro', 'theme_publications']] as const) {
     assert.deepEqual(availabilityReadScope(themeId), { themeId, publicationsTable });
     assert.deepEqual(ogReadScope(themeId), { themeId, publicationsTable });
     assert.deepEqual(followupsReadScope(themeId), { themeId, publicationsTable });

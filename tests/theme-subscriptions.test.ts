@@ -23,9 +23,9 @@ test('seed imports each enabled theme pack and subscribes that pack to itself', 
   assert.match(seed, /planSeedThemeSources\(theme\.id, sources\)/);
   const { listThemeDefinitions, themeSourcePath } = await import('../themes/index.ts');
   const enabled = listThemeDefinitions().filter((theme) => theme.enabled);
-  assert.ok(enabled.some((theme) => theme.id === 'finance'));
+  assert.ok(enabled.some((theme) => theme.id === 'macro'));
   for (const theme of enabled) assert.equal(existsSync(themeSourcePath(theme.id)), true, theme.id);
-  const finance = JSON.parse(readFileSync(themeSourcePath('finance'), 'utf8')) as { sources: Array<{ id: string }> };
+  const finance = JSON.parse(readFileSync(themeSourcePath('macro'), 'utf8')) as { sources: Array<{ id: string }> };
   assert.ok(finance.sources.some((source) => source.id === 'rss-cls-telegraph'));
 });
 
@@ -71,7 +71,7 @@ test('restart leaves a finance-only source alone and does not turn a cancelled A
       VALUES (${id}, ${id}, 'rss', 'T2', 'editorial', now())`;
   }
   await sql`DELETE FROM theme_sources WHERE source_id IN (${financeOnly}, ${cancelled}, ${fresh})`;
-  await sql`INSERT INTO theme_sources (theme_id, source_id, enabled) VALUES ('finance', ${financeOnly}, true)`;
+  await sql`INSERT INTO theme_sources (theme_id, source_id, enabled) VALUES ('macro', ${financeOnly}, true)`;
   await sql`INSERT INTO theme_sources (theme_id, source_id, enabled) VALUES ('ai', ${cancelled}, false)`;
 
   await ensureSeedThemes(sql);
@@ -82,7 +82,7 @@ test('restart leaves a finance-only source alone and does not turn a cancelled A
     ORDER BY source_id, theme_id`;
   assert.deepEqual(rows.map((row) => ({ theme_id: row.theme_id, source_id: row.source_id, enabled: row.enabled })), [
     { theme_id: 'ai', source_id: cancelled, enabled: false },
-    { theme_id: 'finance', source_id: financeOnly, enabled: true },
+    { theme_id: 'macro', source_id: financeOnly, enabled: true },
   ]);
 });
 
@@ -99,18 +99,18 @@ test('an unsubscribed source is not judged or published as the default theme', a
       VALUES (${id}, ${id}, 'rss', 'T2', 'editorial', now())`;
   }
   await sql`DELETE FROM theme_sources WHERE source_id IN (${financeSource}, ${noneSource})`;
-  await sql`INSERT INTO theme_sources (theme_id, source_id, enabled) VALUES ('finance', ${financeSource}, true)`;
+  await sql`INSERT INTO theme_sources (theme_id, source_id, enabled) VALUES ('macro', ${financeSource}, true)`;
 
   const body = "A quantitative strategy report with enough text to be an article. ".repeat(4);
   const { articleId: financeArticle } = await upsertMaterial({
-    sourceId: financeSource, url: `https://example.com/${T}/finance`, title: `Quant note ${T}`,
+    sourceId: financeSource, url: `https://example.com/${T}/macro`, title: `Quant note ${T}`,
     bodyText: body, bodyStatus: "ok", via: "fetch", publishedAt: new Date(),
   });
   const financeJob = await queueProcessing(financeArticle);
   assert.ok(financeJob);
   const [queued] = await sql<{ name: string; data: { themeId?: string } }[]>`
     SELECT name, data FROM pgboss.job WHERE id = ${financeJob}`;
-  assert.deepEqual([queued?.name, queued?.data.themeId], [QUEUES.analyze, "finance"]);
+  assert.deepEqual([queued?.name, queued?.data.themeId], [QUEUES.analyze, "macro"]);
 
   const { articleId: noneArticle } = await upsertMaterial({
     sourceId: noneSource, url: `https://example.com/${T}/none`, title: `Unassigned ${T}`,
@@ -141,7 +141,7 @@ test('re-evaluation follows the subscribed theme and leaves an unsubscribed arti
       VALUES (${id}, ${id}, 'rss', 'T2', 'editorial', now())`;
   }
   await sql`DELETE FROM theme_sources WHERE source_id IN (${financeSource}, ${noneSource})`;
-  await sql`INSERT INTO theme_sources (theme_id, source_id, enabled) VALUES ('finance', ${financeSource}, true)`;
+  await sql`INSERT INTO theme_sources (theme_id, source_id, enabled) VALUES ('macro', ${financeSource}, true)`;
   const body = "A quantitative strategy report with enough text to be an article. ".repeat(4);
   const { articleId: financeArticle } = await upsertMaterial({
     sourceId: financeSource, url: `https://example.com/${T}/reeval-finance`, title: `Quant note ${T}`,
@@ -152,7 +152,7 @@ test('re-evaluation follows the subscribed theme and leaves an unsubscribed arti
   assert.ok(result?.jobId);
   const [job] = await sql<{ name: string; data: { themeId?: string; attemptTag?: string } }[]>`
     SELECT name, data FROM pgboss.job WHERE id = ${result.jobId}`;
-  assert.deepEqual([job?.name, job?.data.themeId, job?.data.attemptTag], [QUEUES.analyze, "finance", `admin:reeval-${T}`]);
+  assert.deepEqual([job?.name, job?.data.themeId, job?.data.attemptTag], [QUEUES.analyze, "macro", `admin:reeval-${T}`]);
   const [reset] = await sql<{ processing_state: string; processing_error: string | null }[]>`
     SELECT processing_state, processing_error FROM articles WHERE id = ${financeArticle}`;
   assert.deepEqual([reset?.processing_state, reset?.processing_error], ["new", null]);

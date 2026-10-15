@@ -19,7 +19,7 @@ before(async () => {
 });
 after(async () => { await app.close(); await closeDb(); });
 
-async function publishFor(themeId: 'ai' | 'finance', title: string) {
+async function publishFor(themeId: 'ai' | 'macro', title: string) {
   const { articleId } = await upsertMaterial({
     sourceId: source,
     url: `https://example.com/${T}/${themeId}/${++sequence}`,
@@ -38,10 +38,10 @@ async function publishFor(themeId: 'ai' | 'finance', title: string) {
 
 test('theme-prefixed v1 item endpoints do not leak cross-theme content', async () => {
   await publishFor('ai', `AI v1 ${T}`);
-  await publishFor('finance', `Finance v1 ${T}`);
+  await publishFor('macro', `Finance v1 ${T}`);
 
   const ai = await app.inject({ method: 'GET', url: '/api/v1/themes/ai/items?mode=selected&limit=10' });
-  const finance = await app.inject({ method: 'GET', url: '/api/v1/themes/finance/items?mode=selected&limit=10' });
+  const finance = await app.inject({ method: 'GET', url: '/api/v1/themes/macro/items?mode=selected&limit=10' });
 
   assert.equal(ai.statusCode, 200, ai.body);
   assert.equal(finance.statusCode, 200, finance.body);

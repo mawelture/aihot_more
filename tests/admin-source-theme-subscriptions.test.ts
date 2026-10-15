@@ -15,7 +15,7 @@ after(async () => {
 });
 
 async function resetThemeState() {
-  await sql`UPDATE themes SET enabled = CASE WHEN id IN ('ai', 'finance') THEN true ELSE enabled END WHERE id IN ('ai', 'finance')`;
+  await sql`UPDATE themes SET enabled = CASE WHEN id IN ('ai', 'macro') THEN true ELSE enabled END WHERE id IN ('ai', 'macro')`;
 }
 
 async function insertSource(sourceId: string) {
@@ -32,19 +32,19 @@ test('admin source detail shows which themes subscribe to the source', async () 
   await insertSource(sourceId);
   await sql`
     INSERT INTO themes (id, name, path_prefix, enabled, is_default, pack_key)
-    VALUES (${disabledThemeId}, 'Disabled theme', ${disabledThemeId}, false, false, 'finance')
+    VALUES (${disabledThemeId}, 'Disabled theme', ${disabledThemeId}, false, false, 'macro')
     ON CONFLICT (id) DO UPDATE
     SET enabled = false,
         updated_at = now()`;
   await sql`
-    INSERT INTO theme_sources (theme_id, source_id, enabled) VALUES ('ai', ${sourceId}, true), ('finance', ${sourceId}, false)
+    INSERT INTO theme_sources (theme_id, source_id, enabled) VALUES ('ai', ${sourceId}, true), ('macro', ${sourceId}, false)
     ON CONFLICT (theme_id, source_id) DO UPDATE SET enabled = EXCLUDED.enabled, updated_at = now()`;
 
   const detail = await sourceDetail(sourceId);
   assert.ok(detail);
   const themes = new Map(detail!.themes.map((theme) => [theme.id, { subscribed: theme.subscribed, enabled: theme.enabled }]));
   assert.deepEqual(themes.get('ai'), { subscribed: true, enabled: true });
-  assert.deepEqual(themes.get('finance'), { subscribed: false, enabled: true });
+  assert.deepEqual(themes.get('macro'), { subscribed: false, enabled: true });
   assert.equal(themes.has(disabledThemeId), false, 'disabled themes stay hidden from the subscription picker');
 });
 
@@ -53,17 +53,17 @@ test('admin can subscribe and unsubscribe a source per theme without deleting hi
   const sourceId = `theme-source-subscribe-${T}`;
   await insertSource(sourceId);
   const actor = `test-admin-${T}`;
-  await setSourceThemeSubscription(sourceId, 'finance', true, '订阅 finance', actor);
-  let [row] = await sql<{ enabled: boolean }[]>`SELECT enabled FROM theme_sources WHERE theme_id = 'finance' AND source_id = ${sourceId}`;
+  await setSourceThemeSubscription(sourceId, 'macro', true, '订阅 finance', actor);
+  let [row] = await sql<{ enabled: boolean }[]>`SELECT enabled FROM theme_sources WHERE theme_id = 'macro' AND source_id = ${sourceId}`;
   assert.equal(row?.enabled, true);
 
-  await setSourceThemeSubscription(sourceId, 'finance', false, '取消 finance', actor);
-  [row] = await sql<{ enabled: boolean }[]>`SELECT enabled FROM theme_sources WHERE theme_id = 'finance' AND source_id = ${sourceId}`;
+  await setSourceThemeSubscription(sourceId, 'macro', false, '取消 finance', actor);
+  [row] = await sql<{ enabled: boolean }[]>`SELECT enabled FROM theme_sources WHERE theme_id = 'macro' AND source_id = ${sourceId}`;
   assert.equal(row?.enabled, false);
 
   const detail = await sourceDetail(sourceId);
-  assert.equal(detail?.themes.find((theme) => theme.id === 'finance')?.subscribed, false);
-  const rows = await sql<{ n: number }[]>`SELECT count(*)::int AS n FROM theme_sources WHERE theme_id = 'finance' AND source_id = ${sourceId}`;
+  assert.equal(detail?.themes.find((theme) => theme.id === 'macro')?.subscribed, false);
+  const rows = await sql<{ n: number }[]>`SELECT count(*)::int AS n FROM theme_sources WHERE theme_id = 'macro' AND source_id = ${sourceId}`;
   assert.equal(rows[0]?.n, 1);
 });
 
@@ -98,15 +98,15 @@ test('admin cannot delete a source that already has an article', async () => {
 test('source list shows the themes that subscribe to each source', async () => {
   const sourceId = `theme-source-list-${T}`;
   await insertSource(sourceId);
-  await setSourceThemeSubscription(sourceId, 'finance', true, '订阅 finance', `test-admin-${T}`);
+  await setSourceThemeSubscription(sourceId, 'macro', true, '订阅 finance', `test-admin-${T}`);
   const subscribed = await listSources({ q: sourceId });
   const row = subscribed.rows.find((item) => item.id === sourceId);
   assert.deepEqual(row?.themes, [
+    { id: 'macro', name: '宏观' },
     { id: 'ai', name: 'AI' },
-    { id: 'finance', name: 'Finance' },
   ]);
 
   await setSourceThemeSubscription(sourceId, 'ai', false, '取消 ai', `test-admin-${T}`);
   const financeOnly = await listSources({ q: sourceId });
-  assert.deepEqual(financeOnly.rows.find((item) => item.id === sourceId)?.themes, [{ id: 'finance', name: 'Finance' }]);
+  assert.deepEqual(financeOnly.rows.find((item) => item.id === sourceId)?.themes, [{ id: 'macro', name: '宏观' }]);
 });

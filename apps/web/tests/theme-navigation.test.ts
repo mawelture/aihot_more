@@ -34,7 +34,9 @@ const api = createServer((req, res) => {
   res.setHeader("Content-Type", "application/json");
   if (url.pathname === "/api/site/meta") return res.end(JSON.stringify({ changelogVersion: "2026-10-11T12:00" }));
   if (url.pathname === "/api/site/themes/ai/reports/daily/latest-page") return res.end(JSON.stringify(report("ai")));
-  if (url.pathname === "/api/site/themes/finance/reports/daily/latest-page") return res.end(JSON.stringify(report("finance")));
+  if (url.pathname === "/api/site/themes/macro/reports/daily/latest-page") return res.end(JSON.stringify(report("macro")));
+  if (url.pathname === "/api/site/themes/quant/reports/daily/latest-page") return res.end(JSON.stringify(report("quant")));
+  if (url.pathname === "/api/site/themes/web3/reports/daily/latest-page") return res.end(JSON.stringify(report("web3")));
   res.statusCode = 404;
   res.end(JSON.stringify({ code: "not_found" }));
 });
@@ -60,17 +62,19 @@ test("theme-prefixed report page renders and exposes a theme switch target for t
   assert.equal(res.status, 200);
   const html = await res.text();
   assert.match(html, /data-theme-switcher/);
-  assert.match(html, /href="\/finance\/daily"/);
+  assert.match(html, /href="\/macro\/daily"/);
+  assert.match(html, /href="\/quant\/daily"/);
+  assert.match(html, /href="\/web3\/daily"/);
   assert.equal(navText(html, "/ai/daily"), "AI 日报");
   assert.equal(navText(html, "/ai/all"), "全部 AI 动态");
 });
 
 test("each theme's sidebar uses that theme's name in the daily and all labels", async () => {
-  const res = await fetch(`${origin}/finance/daily`);
+  const res = await fetch(`${origin}/macro/daily`);
   assert.equal(res.status, 200);
   const html = await res.text();
-  assert.equal(navText(html, "/finance/daily"), "Finance 日报");
-  assert.equal(navText(html, "/finance/all"), "全部 Finance 动态");
+  assert.equal(navText(html, "/macro/daily"), "宏观日报");
+  assert.equal(navText(html, "/macro/all"), "全部宏观动态");
 });
 
 test("theme-prefixed more page keeps internal utility links under the active theme", async () => {

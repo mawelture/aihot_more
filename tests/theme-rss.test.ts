@@ -17,12 +17,12 @@ before(async () => {
   await sql`INSERT INTO sources (id, name, kind, tier, participation_mode, next_fetch_at)
     VALUES (${source}, 'Theme RSS source', 'rss', 'T1', 'editorial', '2100-01-01')`;
   await sql`INSERT INTO theme_sources (theme_id, source_id, enabled)
-    VALUES ('ai', ${source}, true), ('finance', ${source}, true)
+    VALUES ('ai', ${source}, true), ('macro', ${source}, true)
     ON CONFLICT (theme_id, source_id) DO UPDATE SET enabled = EXCLUDED.enabled, updated_at = now()`;
 });
 after(async () => { await app.close(); await closeDb(); });
 
-async function publishFor(themeId: 'ai' | 'finance', title: string) {
+async function publishFor(themeId: 'ai' | 'macro', title: string) {
   const { articleId } = await upsertMaterial({
     sourceId: source,
     url: `https://example.com/${T}/${themeId}/${++sequence}`,
@@ -42,10 +42,10 @@ async function publishFor(themeId: 'ai' | 'finance', title: string) {
 
 test('theme-prefixed RSS item feeds do not leak cross-theme content', async () => {
   await publishFor('ai', `AI feed ${T}`);
-  await publishFor('finance', `Finance feed ${T}`);
+  await publishFor('macro', `Finance feed ${T}`);
 
   const ai = await app.inject({ method: 'GET', url: '/ai/feed.xml' });
-  const finance = await app.inject({ method: 'GET', url: '/finance/feed.xml' });
+  const finance = await app.inject({ method: 'GET', url: '/macro/feed.xml' });
 
   assert.equal(ai.statusCode, 200, ai.body);
   assert.equal(finance.statusCode, 200, finance.body);

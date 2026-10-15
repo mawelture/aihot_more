@@ -1,0 +1,287 @@
+{
+    "groups": [
+        {
+            "key": "Quant",
+            "name": "量化策略",
+            "blurb": "因子、策略、模型、风险与交易执行"
+        }
+    ],
+    "topics": [
+        {
+            "slug": "quant-factor",
+            "name": "因子投资",
+            "group": "Quant",
+            "tags": [
+                "因子投资"
+            ],
+            "definition": "多因子模型、因子暴露、因子轮动"
+        },
+        {
+            "slug": "quant-multi-factor",
+            "name": "多因子",
+            "group": "Quant",
+            "tags": [
+                "多因子"
+            ],
+            "definition": "价值、动量、质量、成长等组合"
+        },
+        {
+            "slug": "quant-momentum",
+            "name": "动量",
+            "group": "Quant",
+            "tags": [
+                "动量"
+            ],
+            "definition": "趋势延续、截面与时序动量"
+        },
+        {
+            "slug": "quant-reversal",
+            "name": "反转",
+            "group": "Quant",
+            "tags": [
+                "反转"
+            ],
+            "definition": "短期反转、超跌反弹"
+        },
+        {
+            "slug": "quant-value",
+            "name": "价值",
+            "group": "Quant",
+            "tags": [
+                "价值"
+            ],
+            "definition": "估值、PB、PE、股息"
+        },
+        {
+            "slug": "quant-quality",
+            "name": "质量",
+            "group": "Quant",
+            "tags": [
+                "质量"
+            ],
+            "definition": "盈利质量、ROE、现金流"
+        },
+        {
+            "slug": "quant-growth",
+            "name": "成长",
+            "group": "Quant",
+            "tags": [
+                "成长"
+            ],
+            "definition": "营收利润增速、PEG"
+        },
+        {
+            "slug": "quant-low-vol",
+            "name": "低波",
+            "group": "Quant",
+            "tags": [
+                "低波"
+            ],
+            "definition": "低波动异象、风险平价"
+        },
+        {
+            "slug": "quant-dividend",
+            "name": "红利",
+            "group": "Quant",
+            "tags": [
+                "红利"
+            ],
+            "definition": "高股息、分红、红利低波"
+        },
+        {
+            "slug": "quant-small-cap",
+            "name": "小市值",
+            "group": "Quant",
+            "tags": [
+                "小市值"
+            ],
+            "definition": "小盘因子、微盘股、流动性风险"
+        },
+        {
+            "slug": "quant-stat-arb",
+            "name": "统计套利",
+            "group": "Quant",
+            "tags": [
+                "统计套利"
+            ],
+            "definition": "配对交易、协整、均值回归"
+        },
+        {
+            "slug": "quant-cta",
+            "name": "CTA与趋势",
+            "group": "Quant",
+            "tags": [
+                "CTA",
+                "趋势跟踪"
+            ],
+            "definition": "商品期货趋势、时序动量、突破"
+        },
+        {
+            "slug": "quant-market-neutral",
+            "name": "市场中性",
+            "group": "Quant",
+            "tags": [
+                "市场中性"
+            ],
+            "definition": "多空对冲、行业中性、Beta中性"
+        },
+        {
+            "slug": "quant-index-enhance",
+            "name": "指数增强",
+            "group": "Quant",
+            "tags": [
+                "指数增强"
+            ],
+            "definition": "跟踪误差、超额收益、组合优化"
+        },
+        {
+            "slug": "quant-event-driven",
+            "name": "事件驱动",
+            "group": "Quant",
+            "tags": [
+                "事件驱动"
+            ],
+            "definition": "财报、并购、指数调整、舆情"
+        },
+        {
+            "slug": "quant-hft",
+            "name": "高频交易",
+            "group": "Quant",
+            "tags": [
+                "高频交易"
+            ],
+            "definition": "做市、Tick、订单流、延迟"
+        },
+        {
+            "slug": "quant-options",
+            "name": "期权波动率",
+            "group": "Quant",
+            "tags": [
+                "波动率策略"
+            ],
+            "definition": "波动率交易、隐含波动率、希腊字母"
+        },
+        {
+            "slug": "quant-ml-ai",
+            "name": "机器学习",
+            "group": "Quant",
+            "tags": [
+                "金融机器学习",
+                "深度学习",
+                "强化学习"
+            ],
+            "definition": "深度学习、NLP、强化学习选股"
+        },
+        {
+            "slug": "quant-alt-data",
+            "name": "另类数据",
+            "group": "Quant",
+            "tags": [
+                "另类数据"
+            ],
+            "definition": "卫星、舆情、电商、招聘、链上"
+        },
+        {
+            "slug": "quant-portfolio",
+            "name": "组合优化",
+            "group": "Quant",
+            "tags": [
+                "组合优化"
+            ],
+            "definition": "均值方差、风险模型、约束"
+        },
+        {
+            "slug": "quant-risk",
+            "name": "风险控制",
+            "group": "Quant",
+            "tags": [
+                "风险管理"
+            ],
+            "definition": "回撤、暴露、止损、压力测试"
+        },
+        {
+            "slug": "quant-execution",
+            "name": "交易执行",
+            "group": "Quant",
+            "tags": [
+                "算法执行",
+                "交易成本/滑点"
+            ],
+            "definition": "冲击成本、滑点、算法交易"
+        },
+        {
+            "slug": "quant-backtest",
+            "name": "回测与过拟合",
+            "group": "Quant",
+            "tags": [
+                "回测",
+                "样本外验证",
+                "过拟合/数据泄漏"
+            ],
+            "definition": "样本外、多重检验、幸存者偏差"
+        },
+        {
+            "slug": "quant-factor-timing",
+            "name": "因子择时",
+            "group": "Quant",
+            "tags": [
+                "因子择时"
+            ],
+            "definition": "宏观状态、拥挤度、因子估值"
+        },
+        {
+            "slug": "quant-macro",
+            "name": "宏观量化",
+            "group": "Quant",
+            "tags": [
+                "宏观量化"
+            ],
+            "definition": "利率、通胀、增长与资产配置"
+        },
+        {
+            "slug": "quant-cross-asset",
+            "name": "跨资产策略",
+            "group": "Quant",
+            "tags": [
+                "跨资产策略"
+            ],
+            "definition": "股债商汇加密联动"
+        },
+        {
+            "slug": "quant-sentiment",
+            "name": "舆情量化",
+            "group": "Quant",
+            "tags": [
+                "舆情量化"
+            ],
+            "definition": "新闻情绪、社交媒体、搜索指数"
+        },
+        {
+            "slug": "quant-crowding",
+            "name": "因子拥挤",
+            "group": "Quant",
+            "tags": [
+                "策略容量/拥挤度"
+            ],
+            "definition": "拥挤度、去杠杆、踩踏"
+        },
+        {
+            "slug": "quant-crypto",
+            "name": "加密量化",
+            "group": "Quant",
+            "tags": [
+                "加密量化"
+            ],
+            "definition": "链上因子、资金费率、期现套利"
+        },
+        {
+            "slug": "quant-fx",
+            "name": "外汇量化",
+            "group": "Quant",
+            "tags": [
+                "外汇量化"
+            ],
+            "definition": "汇率因子、利差、Carry"
+        }
+    ]
+}

@@ -1,0 +1,173 @@
+{
+    "groups": [
+        {
+            "key": "Crypto",
+            "name": "加密货币",
+            "blurb": "加密资产、链上生态、机构资金与监管"
+        }
+    ],
+    "topics": [
+        {
+            "slug": "crypto-btc",
+            "name": "比特币",
+            "group": "Crypto",
+            "tags": [
+                "比特币"
+            ],
+            "definition": "BTC价格、减半、ETF、机构采用"
+        },
+        {
+            "slug": "crypto-eth",
+            "name": "以太坊",
+            "group": "Crypto",
+            "tags": [
+                "以太坊"
+            ],
+            "definition": "ETH、升级、质押、Layer2"
+        },
+        {
+            "slug": "crypto-altcoin",
+            "name": "主流山寨币",
+            "group": "Crypto",
+            "tags": [
+                "主流山寨币"
+            ],
+            "definition": "SOL、BNB、XRP、ADA等主流币"
+        },
+        {
+            "slug": "crypto-l1",
+            "name": "公链",
+            "group": "Crypto",
+            "tags": [
+                "公链"
+            ],
+            "definition": "Layer1竞争、性能、生态"
+        },
+        {
+            "slug": "crypto-l2",
+            "name": "Layer2",
+            "group": "Crypto",
+            "tags": [
+                "Layer2"
+            ],
+            "definition": "Rollup、扩容、坎昆升级"
+        },
+        {
+            "slug": "crypto-defi",
+            "name": "DeFi",
+            "group": "Crypto",
+            "tags": [
+                "DeFi"
+            ],
+            "definition": "DEX、借贷、衍生品、TVL"
+        },
+        {
+            "slug": "crypto-stablecoin",
+            "name": "稳定币",
+            "group": "Crypto",
+            "tags": [
+                "稳定币"
+            ],
+            "definition": "USDT、USDC、算法稳定币、支付与监管"
+        },
+        {
+            "slug": "crypto-meme",
+            "name": "Meme币",
+            "group": "Crypto",
+            "tags": [
+                "Meme币"
+            ],
+            "definition": "Meme行情、社区、投机"
+        },
+        {
+            "slug": "crypto-nft",
+            "name": "NFT与GameFi",
+            "group": "Crypto",
+            "tags": [
+                "NFT与GameFi"
+            ],
+            "definition": "NFT、链游、元宇宙"
+        },
+        {
+            "slug": "crypto-rwa",
+            "name": "RWA",
+            "group": "Crypto",
+            "tags": [
+                "RWA"
+            ],
+            "definition": "现实世界资产代币化、国债、房地产"
+        },
+        {
+            "slug": "crypto-ai",
+            "name": "AI+Crypto",
+            "group": "Crypto",
+            "tags": [
+                "AI+Crypto"
+            ],
+            "definition": "AI代理、算力、数据、DePIN"
+        },
+        {
+            "slug": "crypto-exchange",
+            "name": "交易所",
+            "group": "Crypto",
+            "tags": [
+                "交易所"
+            ],
+            "definition": "币安、Coinbase、OKX、上币与流动性"
+        },
+        {
+            "slug": "crypto-etf",
+            "name": "机构与ETF",
+            "group": "Crypto",
+            "tags": [
+                "机构与ETF"
+            ],
+            "definition": "现货ETF、托管、基金、上市公司持仓"
+        },
+        {
+            "slug": "crypto-regulation",
+            "name": "监管政策",
+            "group": "Crypto",
+            "tags": [
+                "监管政策"
+            ],
+            "definition": "SEC、各国加密立法、税收、合规"
+        },
+        {
+            "slug": "crypto-onchain",
+            "name": "链上数据",
+            "group": "Crypto",
+            "tags": [
+                "链上数据"
+            ],
+            "definition": "活跃地址、交易所余额、巨鲸、Gas"
+        },
+        {
+            "slug": "crypto-mining",
+            "name": "矿业",
+            "group": "Crypto",
+            "tags": [
+                "矿业"
+            ],
+            "definition": "算力、矿机、能源、减半后经济"
+        },
+        {
+            "slug": "crypto-security",
+            "name": "安全事件",
+            "group": "Crypto",
+            "tags": [
+                "安全事件"
+            ],
+            "definition": "黑客、漏洞、跑路、桥攻击"
+        },
+        {
+            "slug": "crypto-macro",
+            "name": "宏观流动性",
+            "group": "Crypto",
+            "tags": [
+                "宏观流动性"
+            ],
+            "definition": "美联储、美元、风险资产联动"
+        }
+    ]
+}

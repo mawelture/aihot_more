@@ -3,8 +3,12 @@
 import { THEME_MANIFEST } from "./manifest.ts";
 import { CATEGORIES as aiCategories } from "./ai/taxonomy.ts";
 import { sidebar as aiSidebar } from "./ai/chrome.ts";
-import { CATEGORIES as financeCategories } from "./finance/taxonomy.ts";
-import { sidebar as financeSidebar } from "./finance/chrome.ts";
+import { CATEGORIES as macroCategories } from "./macro/taxonomy.ts";
+import { sidebar as macroSidebar } from "./macro/chrome.ts";
+import { CATEGORIES as quantCategories } from "./quant/taxonomy.ts";
+import { sidebar as quantSidebar } from "./quant/chrome.ts";
+import { CATEGORIES as web3Categories } from "./web3/taxonomy.ts";
+import { sidebar as web3Sidebar } from "./web3/chrome.ts";
 
 export interface ThemeCategoryTab {
   key: string;
@@ -28,7 +32,9 @@ function categoriesOf(categories: ReadonlyArray<{ key: string; label: string }>)
 
 export const THEME_CHROME: Record<string, ThemeChrome> = {
   ai: { categories: categoriesOf(aiCategories), sidebar: aiSidebar },
-  finance: { categories: categoriesOf(financeCategories), sidebar: financeSidebar },
+  macro: { categories: categoriesOf(macroCategories), sidebar: macroSidebar },
+  quant: { categories: categoriesOf(quantCategories), sidebar: quantSidebar },
+  web3: { categories: categoriesOf(web3Categories), sidebar: web3Sidebar },
 };
 
 const manifestIds = THEME_MANIFEST.map((theme) => theme.id);

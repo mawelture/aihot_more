@@ -10,7 +10,9 @@ export interface ThemeManifestEntry {
 
 export const THEME_MANIFEST: readonly ThemeManifestEntry[] = [
   { id: "ai", name: "AI", enabled: true, isDefault: true },
-  { id: "finance", name: "Finance", enabled: true, isDefault: false },
+  { id: "macro", name: "宏观", enabled: true, isDefault: false },
+  { id: "quant", name: "量化", enabled: true, isDefault: false },
+  { id: "web3", name: "Web3", enabled: true, isDefault: false },
 ];
 
 const defaults = THEME_MANIFEST.filter((theme) => theme.isDefault);

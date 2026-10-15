@@ -17,7 +17,7 @@ test('report scope identity defaults to ai and keeps issue keys independent per 
   assert.deepEqual(reportScopeIdentity(undefined, 'daily', '2026-10-10'), { themeId: 'ai', kind: 'daily', key: '2026-10-10' });
   assert.notDeepEqual(
     reportScopeIdentity('ai', 'daily', '2026-10-10'),
-    reportScopeIdentity('finance', 'daily', '2026-10-10'),
+    reportScopeIdentity('macro', 'daily', '2026-10-10'),
   );
 });
 
@@ -29,8 +29,8 @@ test('report theme migration adds theme_id to reports', () => {
 test('non-default themes store reports in dedicated theme report tables', async () => {
   const { reportStorageForTheme } = await import('../packages/backend/src/reports/compose.ts');
   assert.equal(reportStorageForTheme('ai').reportsTable, 'reports');
-  assert.equal(reportStorageForTheme('finance').reportsTable, 'theme_reports');
-  assert.equal(reportStorageForTheme('finance').revisionsTable, 'theme_report_revisions');
+  assert.equal(reportStorageForTheme('macro').reportsTable, 'theme_reports');
+  assert.equal(reportStorageForTheme('macro').revisionsTable, 'theme_report_revisions');
 });
 
 test('theme report shadow table migrations exist', () => {
@@ -49,7 +49,7 @@ test('report classification corrections branch to theme-specific publication and
     reportsTable: 'reports',
     revisionsTable: 'report_revisions',
   });
-  assert.deepEqual(reportCorrectionStorageForTheme('finance'), {
+  assert.deepEqual(reportCorrectionStorageForTheme('macro'), {
     publicationsTable: 'theme_publications',
     reportsTable: 'theme_reports',
     revisionsTable: 'theme_report_revisions',
@@ -60,7 +60,7 @@ test('report classification corrections branch to theme-specific publication and
 test('scheduled report composition branches to theme-specific report storage', async () => {
   const { composeDueReportsScope } = await import('../packages/backend/src/reports/compose.ts');
   assert.deepEqual(composeDueReportsScope('ai'), { themeId: 'ai', reportsTable: 'reports' });
-  assert.deepEqual(composeDueReportsScope('finance'), { themeId: 'finance', reportsTable: 'theme_reports' });
+  assert.deepEqual(composeDueReportsScope('macro'), { themeId: 'macro', reportsTable: 'theme_reports' });
 });
 
 
@@ -73,8 +73,8 @@ test('public report reads branch availability, cover, and report storage by them
     publicationsTable: 'publications',
     reportsTable: 'reports',
   });
-  assert.deepEqual(reportReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(reportReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
     reportsTable: 'theme_reports',
   });
@@ -86,8 +86,8 @@ test('recall candidate reads branch representative and root-fact lookups by them
     themeId: 'ai',
     publicationsTable: 'publications',
   });
-  assert.deepEqual(recallReadScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(recallReadScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
   });
 });
@@ -99,9 +99,9 @@ test('report edition taxonomy helpers are loaded through the theme pack', async 
     defaultSection: '行业动态',
     hasCommentary: true,
   });
-  assert.deepEqual(reportTaxonomyScope('finance'), {
-    themeId: 'finance',
-    defaultSection: '行业动态',
+  assert.deepEqual(reportTaxonomyScope('macro'), {
+    themeId: 'macro',
+    defaultSection: '公司与行业',
     hasCommentary: true,
   });
 });
@@ -112,8 +112,8 @@ test('report edition candidates branch to theme-specific publication and report 
     publicationsTable: 'publications',
     reportsTable: 'reports',
   });
-  assert.deepEqual(reportEditionScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(reportEditionScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
     reportsTable: 'theme_reports',
   });

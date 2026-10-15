@@ -20,7 +20,7 @@ before(async () => {
 });
 after(async () => { await app.close(); await closeDb(); });
 
-async function publishFor(themeId: 'ai' | 'finance', title: string) {
+async function publishFor(themeId: 'ai' | 'macro', title: string) {
   const { articleId } = await upsertMaterial({
     sourceId: source,
     url: `https://example.com/${T}/${themeId}/${++sequence}`,
@@ -39,11 +39,11 @@ async function publishFor(themeId: 'ai' | 'finance', title: string) {
 
 test('theme-prefixed MCP route exposes theme-scoped latest items', async () => {
   await publishFor('ai', `AI mcp ${T}`);
-  await publishFor('finance', `Finance mcp ${T}`);
+  await publishFor('macro', `Finance mcp ${T}`);
 
   const initialize = await app.inject({
     method: 'POST',
-    url: '/api/mcp/finance',
+    url: '/api/mcp/macro',
     headers: { host: 'localhost', 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
     payload: { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-03-26', capabilities: {}, clientInfo: { name: 'theme-test', version: '1.0.0' } } },
   });
@@ -51,7 +51,7 @@ test('theme-prefixed MCP route exposes theme-scoped latest items', async () => {
 
   const call = await app.inject({
     method: 'POST',
-    url: '/api/mcp/finance',
+    url: '/api/mcp/macro',
     headers: {
       host: 'localhost',
       'content-type': 'application/json',

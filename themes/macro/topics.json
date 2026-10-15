@@ -1,0 +1,367 @@
+{
+    "groups": [
+        {
+            "key": "AStock",
+            "name": "大A",
+            "blurb": "中国A股市场热点、行业主题、资金与政策"
+        },
+        {
+            "key": "Forex",
+            "name": "外汇",
+            "blurb": "全球主要货币、汇率驱动、央行与宏观数据"
+        }
+    ],
+    "topics": [
+        {
+            "slug": "ashare-market",
+            "name": "大盘指数",
+            "group": "AStock",
+            "tags": [
+                "大盘指数"
+            ],
+            "definition": "上证、深证、创业板、科创板、北证等指数与成交情绪"
+        },
+        {
+            "slug": "ashare-tech",
+            "name": "科技",
+            "group": "AStock",
+            "tags": [
+                "科技"
+            ],
+            "definition": "半导体、AI、消费电子、软件、通信等科技成长板块"
+        },
+        {
+            "slug": "ashare-finance",
+            "name": "金融",
+            "group": "AStock",
+            "tags": [
+                "金融"
+            ],
+            "definition": "银行、券商、保险、多元金融与金融监管"
+        },
+        {
+            "slug": "ashare-consumer",
+            "name": "消费",
+            "group": "AStock",
+            "tags": [
+                "消费"
+            ],
+            "definition": "食品饮料、家电、汽车、零售、旅游等消费板块"
+        },
+        {
+            "slug": "ashare-healthcare",
+            "name": "医药",
+            "group": "AStock",
+            "tags": [
+                "医药"
+            ],
+            "definition": "创新药、医疗器械、中药、医疗服务与集采"
+        },
+        {
+            "slug": "ashare-new-energy",
+            "name": "新能源",
+            "group": "AStock",
+            "tags": [
+                "新能源"
+            ],
+            "definition": "光伏、风电、储能、锂电、新能源车产业链"
+        },
+        {
+            "slug": "ashare-manufacturing",
+            "name": "高端制造",
+            "group": "AStock",
+            "tags": [
+                "高端制造"
+            ],
+            "definition": "机器人、工业母机、工程机械、自动化"
+        },
+        {
+            "slug": "ashare-military",
+            "name": "军工",
+            "group": "AStock",
+            "tags": [
+                "军工"
+            ],
+            "definition": "国防军工、航天航空、军民融合"
+        },
+        {
+            "slug": "ashare-cyclical",
+            "name": "周期",
+            "group": "AStock",
+            "tags": [
+                "周期"
+            ],
+            "definition": "煤炭、石油、有色、钢铁、化工等资源周期"
+        },
+        {
+            "slug": "ashare-real-estate",
+            "name": "地产基建",
+            "group": "AStock",
+            "tags": [
+                "地产基建"
+            ],
+            "definition": "房地产、建筑、建材、水泥与基建投资"
+        },
+        {
+            "slug": "ashare-agriculture",
+            "name": "农业",
+            "group": "AStock",
+            "tags": [
+                "农业"
+            ],
+            "definition": "种业、养殖、化肥、粮食安全"
+        },
+        {
+            "slug": "ashare-media",
+            "name": "传媒互联网",
+            "group": "AStock",
+            "tags": [
+                "传媒互联网"
+            ],
+            "definition": "游戏、影视、广告、电商与平台经济"
+        },
+        {
+            "slug": "ashare-soe",
+            "name": "国企改革",
+            "group": "AStock",
+            "tags": [
+                "国企改革"
+            ],
+            "definition": "中特估、央企整合、市值管理、股权激励"
+        },
+        {
+            "slug": "ashare-policy",
+            "name": "政策监管",
+            "group": "AStock",
+            "tags": [
+                "政策监管"
+            ],
+            "definition": "货币、财政、产业政策与证监会监管"
+        },
+        {
+            "slug": "ashare-capital-flow",
+            "name": "资金面",
+            "group": "AStock",
+            "tags": [
+                "资金面"
+            ],
+            "definition": "北向、两融、ETF申赎、公募私募仓位"
+        },
+        {
+            "slug": "ashare-earnings",
+            "name": "财报业绩",
+            "group": "AStock",
+            "tags": [
+                "财报业绩"
+            ],
+            "definition": "业绩预告、快报、年报季报超预期与暴雷"
+        },
+        {
+            "slug": "ashare-ma",
+            "name": "并购重组",
+            "group": "AStock",
+            "tags": [
+                "并购重组"
+            ],
+            "definition": "资产注入、借壳、产业整合、控制权变更"
+        },
+        {
+            "slug": "ashare-sentiment",
+            "name": "市场情绪",
+            "group": "AStock",
+            "tags": [
+                "市场情绪"
+            ],
+            "definition": "涨停潮、连板、题材轮动、风险偏好"
+        },
+        {
+            "slug": "ashare-etf",
+            "name": "指数产品",
+            "group": "AStock",
+            "tags": [
+                "指数产品"
+            ],
+            "definition": "宽基ETF、行业ETF、指数增强、被动资金"
+        },
+        {
+            "slug": "ashare-bse",
+            "name": "北交所",
+            "group": "AStock",
+            "tags": [
+                "北交所"
+            ],
+            "definition": "北证50、专精特新、转板与流动性"
+        },
+        {
+            "slug": "ashare-dividend",
+            "name": "红利策略",
+            "group": "AStock",
+            "tags": [
+                "红利策略"
+            ],
+            "definition": "高股息、分红回购、中特估"
+        },
+        {
+            "slug": "ashare-ai-compute",
+            "name": "AI算力",
+            "group": "AStock",
+            "tags": [
+                "AI算力"
+            ],
+            "definition": "算力、服务器、光模块、液冷、数据中心"
+        },
+        {
+            "slug": "forex-usd",
+            "name": "美元指数",
+            "group": "Forex",
+            "tags": [
+                "美元指数"
+            ],
+            "definition": "DXY走势、美国经济与美联储预期"
+        },
+        {
+            "slug": "forex-cny",
+            "name": "人民币汇率",
+            "group": "Forex",
+            "tags": [
+                "人民币汇率"
+            ],
+            "definition": "在岸离岸人民币、中间价、跨境资金"
+        },
+        {
+            "slug": "forex-eur",
+            "name": "欧元",
+            "group": "Forex",
+            "tags": [
+                "欧元"
+            ],
+            "definition": "欧元区经济、欧央行、欧元美元"
+        },
+        {
+            "slug": "forex-jpy",
+            "name": "日元",
+            "group": "Forex",
+            "tags": [
+                "日元"
+            ],
+            "definition": "日本央行、套息交易、干预"
+        },
+        {
+            "slug": "forex-gbp",
+            "name": "英镑",
+            "group": "Forex",
+            "tags": [
+                "英镑"
+            ],
+            "definition": "英国央行、经济数据、脱欧后贸易"
+        },
+        {
+            "slug": "forex-commodity",
+            "name": "商品货币",
+            "group": "Forex",
+            "tags": [
+                "商品货币"
+            ],
+            "definition": "澳元、加元、纽元与大宗商品"
+        },
+        {
+            "slug": "forex-em",
+            "name": "新兴市场货币",
+            "group": "Forex",
+            "tags": [
+                "新兴市场货币"
+            ],
+            "definition": "新兴市场汇率、资本流动、危机"
+        },
+        {
+            "slug": "forex-central-bank",
+            "name": "央行政策",
+            "group": "Forex",
+            "tags": [
+                "央行政策"
+            ],
+            "definition": "美联储、欧央行、日央行等利率决议与前瞻指引"
+        },
+        {
+            "slug": "forex-rates",
+            "name": "利率预期",
+            "group": "Forex",
+            "tags": [
+                "利率预期"
+            ],
+            "definition": "美债收益率、掉期、点阵图、降息加息预期"
+        },
+        {
+            "slug": "forex-macro",
+            "name": "宏观数据",
+            "group": "Forex",
+            "tags": [
+                "宏观数据"
+            ],
+            "definition": "非农、CPI、PMI、GDP等汇率驱动数据"
+        },
+        {
+            "slug": "forex-geopolitics",
+            "name": "地缘政治",
+            "group": "Forex",
+            "tags": [
+                "地缘政治"
+            ],
+            "definition": "战争、制裁、选举、贸易摩擦对汇率影响"
+        },
+        {
+            "slug": "forex-safe-haven",
+            "name": "避险货币",
+            "group": "Forex",
+            "tags": [
+                "避险货币"
+            ],
+            "definition": "美元、日元、瑞郎避险需求"
+        },
+        {
+            "slug": "forex-carry",
+            "name": "套息交易",
+            "group": "Forex",
+            "tags": [
+                "套息交易"
+            ],
+            "definition": "利差交易、融资货币、平仓冲击"
+        },
+        {
+            "slug": "forex-intervention",
+            "name": "汇率干预",
+            "group": "Forex",
+            "tags": [
+                "汇率干预"
+            ],
+            "definition": "央行口头或实际干预、资本管制"
+        },
+        {
+            "slug": "forex-flow",
+            "name": "跨境资金",
+            "group": "Forex",
+            "tags": [
+                "跨境资金"
+            ],
+            "definition": "外资流入、贸易顺差、对外投资"
+        },
+        {
+            "slug": "forex-derivatives",
+            "name": "外汇衍生品",
+            "group": "Forex",
+            "tags": [
+                "外汇衍生品"
+            ],
+            "definition": "远期、掉期、期权、波动率"
+        },
+        {
+            "slug": "forex-dollar-cycle",
+            "name": "美元周期",
+            "group": "Forex",
+            "tags": [
+                "美元周期"
+            ],
+            "definition": "美元潮汐、全球流动性"
+        }
+    ]
+}

@@ -79,6 +79,14 @@ docker compose run --rm setup && docker compose up -d
 
 下面按时间从新到旧列出每次更新要注意的事。
 
+#### 宏观、量化、Web3 拆分（2026 年 10 月 15 日）
+
+原来的 `finance` 主题拆成三个：`macro`（宏观）、`quant`（量化）、`web3`（Web3）。网址从 `/finance/...` 改为 `/macro/...`、`/quant/...`、`/web3/...`。
+
+`scripts/migrate.ts` 在写入主题清单后，会把还存在的 `finance` 行拆开：量化信源（arXiv q-fin、Alpha Architect、Quantpedia、Quantified Strategies、Robot Wealth）归 `quant`，加密信源（PANews、The Block、Bitcoin Magazine、Cointelegraph、Decrypt）归 `web3`，其余归 `macro`。文章、公开稿、判断、事实和事件跟着信源走；一个事件里混了多类信源时留在宏观。拆完删除 `finance` 这一行。已经拆过的库不会再改。
+
+这次会改已有订阅和主题内的内容归属，更新前先按下方 [备份](#备份) 备份。示范信源文件里的地址不会回写已经导入的信源。日报和热点榜的定时任务仍然只跑默认主题。
+
 #### 单站多主题（2026 年 10 月 11 日）
 
 - **公开入口改为主题路径**：网页首页改成根路径 `/` 跳转到默认主题，公开站点页在 `/{theme}/...`，主题化机器出口在 `/api/site/themes/{theme}/...`、`/api/v1/themes/{theme}/...`、`/api/mcp/{theme}`、`/{theme}/feed.xml`、`/{theme}/openapi-v1.json`、`/{theme}/llms.txt`。现有根路径 `/feed.xml`、`/api/v1/...` 等兼容出口仍保留给旧客户端，但新接入应改用带主题前缀的地址。

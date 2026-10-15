@@ -82,6 +82,8 @@ if (import.meta.main) {
   try {
     await runMigrations(sql, REPO_ROOT);
     await ensureSeedThemes(sql);
+    const { splitFinanceTheme } = await import("./split-finance-theme.ts");
+    await splitFinanceTheme(sql);
     await ensureBossSchema();
   }
   finally { await closeDb(); }

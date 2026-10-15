@@ -14,7 +14,11 @@
             "owner_entity_id": "cls",
             "participation_mode": "editorial",
             "interval_minutes": 5,
-            "tags": ["快讯", "A股", "政策"],
+            "tags": [
+                "快讯",
+                "A股",
+                "政策"
+            ],
             "site_fulltext": false,
             "syndicate_fulltext": false
         },
@@ -32,7 +36,11 @@
             "owner_entity_id": "10jqka",
             "participation_mode": "editorial",
             "interval_minutes": 5,
-            "tags": ["快讯", "A股", "市场"],
+            "tags": [
+                "快讯",
+                "A股",
+                "市场"
+            ],
             "site_fulltext": false,
             "syndicate_fulltext": false
         },
@@ -50,7 +58,11 @@
             "owner_entity_id": "wallstreetcn",
             "participation_mode": "editorial",
             "interval_minutes": 5,
-            "tags": ["宏观", "A股", "快讯"],
+            "tags": [
+                "宏观",
+                "A股",
+                "快讯"
+            ],
             "site_fulltext": false,
             "syndicate_fulltext": false
         },
@@ -68,7 +80,11 @@
             "owner_entity_id": "eastmoney",
             "participation_mode": "editorial",
             "interval_minutes": 120,
-            "tags": ["研报", "策略", "A股"],
+            "tags": [
+                "研报",
+                "策略",
+                "A股"
+            ],
             "site_fulltext": false,
             "syndicate_fulltext": false
         },
@@ -86,7 +102,11 @@
             "owner_entity_id": "caixin",
             "participation_mode": "editorial",
             "interval_minutes": 30,
-            "tags": ["深度", "宏观", "市场"],
+            "tags": [
+                "深度",
+                "宏观",
+                "市场"
+            ],
             "site_fulltext": false,
             "syndicate_fulltext": false
         },
@@ -104,7 +124,11 @@
             "owner_entity_id": "yicai",
             "participation_mode": "editorial",
             "interval_minutes": 30,
-            "tags": ["头条", "宏观", "A股"],
+            "tags": [
+                "头条",
+                "宏观",
+                "A股"
+            ],
             "site_fulltext": false,
             "syndicate_fulltext": false
         },
@@ -122,7 +146,11 @@
             "owner_entity_id": "nfra",
             "participation_mode": "editorial",
             "interval_minutes": 60,
-            "tags": ["监管", "政策", "银行"],
+            "tags": [
+                "监管",
+                "政策",
+                "银行"
+            ],
             "site_fulltext": false,
             "syndicate_fulltext": false
         },
@@ -140,7 +168,11 @@
             "owner_entity_id": "hkex",
             "participation_mode": "editorial",
             "interval_minutes": 60,
-            "tags": ["交易所", "港股", "新闻"],
+            "tags": [
+                "交易所",
+                "港股",
+                "新闻"
+            ],
             "site_fulltext": false,
             "syndicate_fulltext": false
         },
@@ -158,7 +190,125 @@
             "owner_entity_id": "sec",
             "participation_mode": "editorial",
             "interval_minutes": 60,
-            "tags": ["监管", "美股", "政策"],
+            "tags": [
+                "监管",
+                "美股",
+                "政策"
+            ],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-fed-press-all",
+            "name": "美联储",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://www.federalreserve.gov/feeds/press_all.xml",
+                "_aihot": {
+                    "initialBackfillLimit": 8
+                }
+            },
+            "tier": "T1",
+            "owner_entity_id": "federal_reserve",
+            "participation_mode": "editorial",
+            "interval_minutes": 60,
+            "tags": [
+                "官方",
+                "央行",
+                "外汇",
+                "美元"
+            ],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-ecb-press",
+            "name": "欧洲央行",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://www.ecb.europa.eu/rss/press.html",
+                "_aihot": {
+                    "initialBackfillLimit": 8
+                }
+            },
+            "tier": "T1",
+            "owner_entity_id": "ecb",
+            "participation_mode": "editorial",
+            "interval_minutes": 60,
+            "tags": [
+                "官方",
+                "央行",
+                "外汇",
+                "欧元"
+            ],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-boe-news",
+            "name": "英国央行",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://www.bankofengland.co.uk/rss/news",
+                "_aihot": {
+                    "initialBackfillLimit": 8
+                }
+            },
+            "tier": "T1",
+            "owner_entity_id": "boe",
+            "participation_mode": "editorial",
+            "interval_minutes": 60,
+            "tags": [
+                "官方",
+                "央行",
+                "外汇",
+                "英镑"
+            ],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-boj-whatsnew",
+            "name": "日本央行",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://www.boj.or.jp/en/rss/whatsnew.xml",
+                "_aihot": {
+                    "initialBackfillLimit": 8
+                }
+            },
+            "tier": "T1",
+            "owner_entity_id": "boj",
+            "participation_mode": "editorial",
+            "interval_minutes": 60,
+            "tags": [
+                "官方",
+                "央行",
+                "外汇",
+                "日元"
+            ],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-forexlive-news",
+            "name": "ForexLive",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://www.forexlive.com/feed/news",
+                "_aihot": {
+                    "initialBackfillLimit": 8
+                }
+            },
+            "tier": "T2",
+            "owner_entity_id": "forexlive",
+            "participation_mode": "editorial",
+            "interval_minutes": 15,
+            "tags": [
+                "媒体",
+                "外汇",
+                "快讯"
+            ],
             "site_fulltext": false,
             "syndicate_fulltext": false
         }

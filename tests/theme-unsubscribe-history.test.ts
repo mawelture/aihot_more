@@ -9,14 +9,14 @@ test('unsubscribe stops future distribution but keeps historical theme articles'
   const { planThemeArticleRows } = await import('../packages/backend/src/themes/distribution.ts');
   const before = planThemeArticleRows('article-before', 'shared-source', [
     { theme_id: 'ai', source_id: 'shared-source', enabled: true },
-    { theme_id: 'finance', source_id: 'shared-source', enabled: true },
+    { theme_id: 'macro', source_id: 'shared-source', enabled: true },
   ]);
   const after = planThemeArticleRows('article-after', 'shared-source', [
     { theme_id: 'ai', source_id: 'shared-source', enabled: true },
-    { theme_id: 'finance', source_id: 'shared-source', enabled: false },
+    { theme_id: 'macro', source_id: 'shared-source', enabled: false },
   ]);
-  assert.ok(before.some((row) => row.themeId === 'finance' && row.articleId === 'article-before'));
-  assert.ok(!after.some((row) => row.themeId === 'finance' && row.articleId === 'article-after'));
+  assert.ok(before.some((row) => row.themeId === 'macro' && row.articleId === 'article-before'));
+  assert.ok(!after.some((row) => row.themeId === 'macro' && row.articleId === 'article-after'));
 });
 
 test('theme article migration defines the distribution table', () => {

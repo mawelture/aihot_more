@@ -1,0 +1,84 @@
+{
+    "sources": [
+        {
+            "id": "panewslab",
+            "name": "PANews",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://www.panewslab.com/rss.xml?lang=zh&type=NORMAL%2CNEWS",
+                "_aihot": { "initialBackfillLimit": 8 }
+            },
+            "tier": "T1",
+            "owner_entity_id": null,
+            "participation_mode": "editorial",
+            "interval_minutes": 30,
+            "tags": [],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-theblock",
+            "name": "The Block",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://www.theblock.co/rss.xml",
+                "_aihot": { "initialBackfillLimit": 8 }
+            },
+            "tier": "T1",
+            "owner_entity_id": "theblock",
+            "participation_mode": "editorial",
+            "interval_minutes": 30,
+            "tags": ["媒体", "加密货币"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-bitcoinmagazine",
+            "name": "Bitcoin Magazine",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://bitcoinmagazine.com/feed",
+                "_aihot": { "initialBackfillLimit": 8 }
+            },
+            "tier": "T2",
+            "owner_entity_id": "bitcoinmagazine",
+            "participation_mode": "editorial",
+            "interval_minutes": 60,
+            "tags": ["媒体", "比特币", "加密货币"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-cointelegraph",
+            "name": "Cointelegraph",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://cointelegraph.com/rss",
+                "_aihot": { "initialBackfillLimit": 8 }
+            },
+            "tier": "T2",
+            "owner_entity_id": "cointelegraph",
+            "participation_mode": "editorial",
+            "interval_minutes": 30,
+            "tags": ["媒体", "加密货币"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-decrypt",
+            "name": "Decrypt",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://decrypt.co/feed",
+                "_aihot": { "initialBackfillLimit": 8 }
+            },
+            "tier": "T2",
+            "owner_entity_id": "decrypt",
+            "participation_mode": "editorial",
+            "interval_minutes": 30,
+            "tags": ["媒体", "加密货币"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        }
+    ]
+}

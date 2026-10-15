@@ -17,10 +17,10 @@ test('theme-prefixed site and static public endpoints are served', async () => {
   const stats = await app.inject({ method: 'GET', url: '/api/site/themes/ai/stats' });
   assert.equal(stats.statusCode, 200, stats.body);
 
-  const openapi = await app.inject({ method: 'GET', url: '/finance/openapi-v1.json' });
+  const openapi = await app.inject({ method: 'GET', url: '/macro/openapi-v1.json' });
   assert.equal(openapi.statusCode, 200, openapi.body);
   assert.match(openapi.body, /\/api\/v1\/themes\/\{theme\}\/items/);
 
-  const llms = await app.inject({ method: 'GET', url: '/finance/llms.txt' });
+  const llms = await app.inject({ method: 'GET', url: '/macro/llms.txt' });
   assert.equal(llms.statusCode, 200, llms.body);
 });

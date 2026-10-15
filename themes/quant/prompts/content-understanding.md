@@ -8,19 +8,20 @@
 
 ## 策略类型
 
-`itemType` 必须七选一：
+`itemType` 必须八选一：
 
-- `model_release`：新量化模型、因子模型、风控模型、组合优化模型或大版本更新
-- `product_launch`：新交易产品、平台、数据工具、回测/执行系统或重大功能更新
-- `tool_or_prompt`：可直接复用的策略、因子、信号、指标、代码、参数、Prompt、Skill 或技巧
-- `research_paper`：论文、研究或技术报告，尤其是因子、策略、市场微结构、风险建模等
-- `industry_event`：量化行业事件：融资、收购、监管、诉讼、商业动作或人事
+- `strategy_release`：具体策略、因子组合或交易规则的首次公开、实质更新或明确策略的评估
+- `product_launch`：新交易产品、平台、数据服务或重大功能更新
+- `tool_or_code`：可直接复用的研究代码、回测框架、执行组件、指标或工程方法
+- `research_paper`：论文、工作论文、技术报告或系统性实验
+- `market_event`：与量化交易直接相关的市场结构、流动性、波动率、拥挤或成交结构变化
+- `industry_event`：量化机构经营、融资并购、人事、监管、交易规则、事故或调查
 - `opinion_analysis`：观点、市场判断、策略复盘、行业判断或长访谈
-- `tutorial_explainer`：教程、科普、解读或评测
+- `tutorial_explainer`：教程、复现、回测实践、解读或评测
 
-优先级：发了模型选 `model_release`；发了工具选 `product_launch`；发了策略、因子、信号、代码、Prompt 或方法选 `tool_or_prompt`；论文优先 `research_paper`；评测/教程优先 `tutorial_explainer`；行业事件优先 `industry_event`；观点/复盘优先 `opinion_analysis`。
+优先级：明确策略或因子评估选 `strategy_release`；产品或数据服务选 `product_launch`；代码、框架或工程方法选 `tool_or_code`；论文优先 `research_paper`；市场结构变化选 `market_event`；评测/教程优先 `tutorial_explainer`；机构与监管事件优先 `industry_event`；观点/复盘优先 `opinion_analysis`。
 
-输出前检查 `itemType` 与第一个分类标签是否自洽：`model_release` 对应“模型发布”，`product_launch` 对应“产品更新”，`tool_or_prompt` 对应“教程/实践”或“开源/代码”，`research_paper` 对应“论文/研究”，`industry_event` 对应“行业动态”或“政策/监管”，`opinion_analysis` 对应“大佬观点”或“市场现象/趋势”，`tutorial_explainer` 对应“教程/实践”或“评测/基准”。如果二者冲突，按当前材料的核心事件修正后再输出。
+输出前检查 `itemType` 与第一个分类标签是否自洽：`strategy_release` 对应“策略披露”或“策略评估”，`product_launch` 对应“产品更新”或“数据更新”，`tool_or_code` 对应“开源/仓库”或“通用工具”，`research_paper` 对应“论文/研究”或“评测/基准”，`market_event` 对应“市场观察”，`industry_event` 对应“行业动态”“政策/监管”或“风险事件”，`opinion_analysis` 对应“观点/评论”，`tutorial_explainer` 对应“教程/实践”。如果二者冲突，按当前材料的核心事件修正后再输出。
 
 ## 作者角色
 
@@ -32,12 +33,12 @@
 
 ## 标签
 
-`tags` 输出 1–6 个字符串。第一个必须从以下分类标签中选一个：模型发布、产品更新、开源/代码、论文/研究、教程/实践、大佬观点、评测/基准、风控/合规、市场现象/趋势、行业动态、政策/监管、非量化/通用工具、其他。
+`tags` 输出 1–6 个字符串。第一个必须从以下分类标签中选一个：策略披露、策略评估、产品更新、数据更新、论文/研究、开源/仓库、教程/实践、市场观察、观点/评论、评测/基准、行业动态、政策/监管、风险事件、通用工具、其他。
 
 其后可选 0–5 个适用标签，并且只能来自以下两个白名单：
 
-- 主题：因子、信号、择时、选股、CTA、高频、套利、做市、组合优化、风险控制、回测、数据/训练、执行/工程、开源生态、宏观、期权/衍生品、加密货币
-- 实体：Wind、同花顺、聚宽、米筐、优矿、QuantConnect、Tushare、AkShare、Bloomberg、Refinitiv、GitHub、arXiv、SSRN、Kaggle
+- 主题：CTA、事件驱动、交易成本/滑点、价值、低波、加密量化、动量、反转、另类数据、回测、因子投资、因子择时、外汇量化、多因子、宏观量化、小市值、市场中性、强化学习、成长、指数增强、样本外验证、波动率策略、深度学习、策略容量/拥挤度、算法执行、红利、组合优化、统计套利、舆情量化、质量、趋势跟踪、跨资产策略、过拟合/数据泄漏、金融机器学习、风险管理、高频交易
+- 实体：QuantConnect、聚宽、米筐、VeighNa、Two Sigma、WorldQuant、Citadel、Citadel Securities、CME Group、中国证监会
 
 正文中即使明确出现了 OpenAI、NVIDIA、Apple、阿里等其他实体，也不要把它们放进 `tags`。不要创造白名单之外的标签。没有适用的主题或实体时，只返回第一个分类标签；例如交易所限制某类策略的监管新闻，不需要强行归到“因子”或“高频”。
 
@@ -59,4 +60,4 @@
 
 只返回合法 JSON，不要 Markdown，不要解释。顶层必须且只能包含以下六个字段：
 
-{"itemType":"tool_or_prompt","authorRole":"observer","tags":["教程/实践","因子","回测"],"editorialJudgment":"原文给出因子构建与回测流程，读者可以据此判断其可迁移性和主要风险。","titleZh":"某团队发布动量因子回测框架","summaryZh":"某团队发布动量因子回测框架，给出因子定义、参数区间和回测结果。"}
+{"itemType":"tool_or_code","authorRole":"observer","tags":["教程/实践","动量","回测"],"editorialJudgment":"原文给出因子构建与回测流程，读者可以据此判断其可迁移性和主要风险。","titleZh":"某团队发布动量因子回测框架","summaryZh":"某团队发布动量因子回测框架，给出因子定义、参数区间和回测结果。"}

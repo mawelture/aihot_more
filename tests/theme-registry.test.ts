@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { CATEGORIES as AI_THEME_CATEGORIES, RELEASE as AI_THEME_RELEASE } from '../themes/ai/taxonomy.ts';
 import { SELECTION as AI_THEME_SELECTION } from '../themes/ai/selection.ts';
-import { CATEGORIES as FINANCE_THEME_CATEGORIES } from '../themes/finance/taxonomy.ts';
-import { SELECTION as FINANCE_THEME_SELECTION } from '../themes/finance/selection.ts';
+import { CATEGORIES as QUANT_THEME_CATEGORIES } from '../themes/quant/taxonomy.ts';
+import { SELECTION as QUANT_THEME_SELECTION } from '../themes/quant/selection.ts';
 import path from 'node:path';
 
 test('loadThemePack returns the seeded ai theme pack with current seeded AI theme values', async () => {
@@ -19,14 +19,25 @@ test('loadThemePack returns the seeded ai theme pack with current seeded AI them
   assert.match(pack.promptsDir, /themes\/ai\/prompts$/);
 });
 
-test('loadThemePack returns the finance pack instead of falling back to ai', async () => {
+test('loadThemePack returns the quant pack instead of falling back to ai', async () => {
   const { loadThemePack } = await import('../themes/index.ts');
-  const pack = loadThemePack('finance');
-  assert.equal(pack.id, 'finance');
+  const pack = loadThemePack('quant');
+  assert.equal(pack.id, 'quant');
   assert.equal(pack.isDefault, false);
-  assert.deepEqual(pack.taxonomy.CATEGORIES, FINANCE_THEME_CATEGORIES);
-  assert.deepEqual(pack.selection, FINANCE_THEME_SELECTION);
-  assert.match(pack.promptsDir, /themes\/finance\/prompts$/);
+  assert.deepEqual(pack.taxonomy.CATEGORIES, QUANT_THEME_CATEGORIES);
+  assert.deepEqual(pack.selection, QUANT_THEME_SELECTION);
+  assert.match(pack.promptsDir, /themes\/quant\/prompts$/);
+});
+
+test('macro and web3 packs load on their own', async () => {
+  const { loadThemePack } = await import('../themes/index.ts');
+  for (const id of ['macro', 'web3'] as const) {
+    const pack = loadThemePack(id);
+    assert.equal(pack.id, id);
+    assert.equal(pack.isDefault, false);
+    assert.notDeepEqual(pack.taxonomy.CATEGORIES, AI_THEME_CATEGORIES);
+    assert.match(pack.promptsDir, new RegExp(`themes/${id}/prompts$`));
+  }
 });
 
 test('loadThemePack rejects a theme that is not registered', async () => {

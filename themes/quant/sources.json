@@ -1,0 +1,84 @@
+{
+    "sources": [
+        {
+            "id": "rss-arxiv-qfin",
+            "name": "arXiv 量化金融",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "http://export.arxiv.org/rss/q-fin",
+                "_aihot": { "initialBackfillLimit": 8 }
+            },
+            "tier": "T1",
+            "owner_entity_id": "arxiv",
+            "participation_mode": "editorial",
+            "interval_minutes": 240,
+            "tags": ["论文", "量化", "q-fin"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-alphaarchitect",
+            "name": "Alpha Architect",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://alphaarchitect.com/feed/",
+                "_aihot": { "initialBackfillLimit": 5 }
+            },
+            "tier": "T2",
+            "owner_entity_id": "alpha_architect",
+            "participation_mode": "editorial",
+            "interval_minutes": 240,
+            "tags": ["策略", "量化", "因子"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-quantpedia",
+            "name": "Quantpedia",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://quantpedia.com/feed/",
+                "_aihot": { "initialBackfillLimit": 5 }
+            },
+            "tier": "T2",
+            "owner_entity_id": "quantpedia",
+            "participation_mode": "editorial",
+            "interval_minutes": 240,
+            "tags": ["策略", "量化", "研究"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-quantstart",
+            "name": "Quantified Strategies",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://www.quantifiedstrategies.com/feed/",
+                "_aihot": { "initialBackfillLimit": 5 }
+            },
+            "tier": "T2",
+            "owner_entity_id": "quantstart",
+            "participation_mode": "editorial",
+            "interval_minutes": 240,
+            "tags": ["策略", "量化", "开发"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        },
+        {
+            "id": "rss-robotwealth",
+            "name": "Robot Wealth",
+            "kind": "rss",
+            "config": {
+                "feedUrl": "https://robotwealth.com/feed/",
+                "_aihot": { "initialBackfillLimit": 5 }
+            },
+            "tier": "T2",
+            "owner_entity_id": "robotwealth",
+            "participation_mode": "editorial",
+            "interval_minutes": 240,
+            "tags": ["策略", "量化", "交易"],
+            "site_fulltext": false,
+            "syndicate_fulltext": false
+        }
+    ]
+}

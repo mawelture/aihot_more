@@ -3,8 +3,12 @@ import path from "node:path";
 import { DEFAULT_THEME_ID, THEME_MANIFEST, type ThemeManifestEntry } from "./manifest.ts";
 import * as aiTaxonomy from "./ai/taxonomy.ts";
 import { SELECTION as aiSelection } from "./ai/selection.ts";
-import * as financeTaxonomy from "./finance/taxonomy.ts";
-import { SELECTION as financeSelection } from "./finance/selection.ts";
+import * as macroTaxonomy from "./macro/taxonomy.ts";
+import { SELECTION as macroSelection } from "./macro/selection.ts";
+import * as quantTaxonomy from "./quant/taxonomy.ts";
+import { SELECTION as quantSelection } from "./quant/selection.ts";
+import * as web3Taxonomy from "./web3/taxonomy.ts";
+import { SELECTION as web3Selection } from "./web3/selection.ts";
 
 export type { ThemeManifestEntry };
 export { DEFAULT_THEME_ID, THEME_MANIFEST };
@@ -28,7 +32,9 @@ export interface ThemeTopicsFile {
 
 const PACKS = {
   ai: { taxonomy: aiTaxonomy, selection: aiSelection },
-  finance: { taxonomy: financeTaxonomy, selection: financeSelection },
+  macro: { taxonomy: macroTaxonomy, selection: macroSelection },
+  quant: { taxonomy: quantTaxonomy, selection: quantSelection },
+  web3: { taxonomy: web3Taxonomy, selection: web3Selection },
 };
 
 type PackId = keyof typeof PACKS;

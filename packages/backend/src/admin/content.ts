@@ -356,7 +356,7 @@ export async function rerun(id: string, step: "extract" | "analyze" | "group", r
       SELECT after FROM audit_log WHERE subject = ${`content:${id}`} AND action = ${`content.rerun.${step}`}
         AND actor = ${actor} AND request_id = ${requestId} ORDER BY id DESC LIMIT 1`;
     if (prior) return { jobId: prior.after.jobId };
-    // An omitted theme follows the article's subscription. Defaulting to AI parks a finance-only article as unsubscribed.
+    // An omitted theme follows the article's subscription. Defaulting to AI parks an article whose only themes are elsewhere.
     const assigned = await themeIdsForArticle(id, tx);
     const scopedThemeId = themeId?.trim() ? themeIdOf(themeId) : (assigned.includes(DEFAULT_THEME_ID) || assigned.length === 0 ? DEFAULT_THEME_ID : assigned[0]!);
     if (!assigned.includes(scopedThemeId)) throw new Conflict("没有订阅这个主题，不能重新处理");

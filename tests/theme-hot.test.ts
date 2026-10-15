@@ -15,8 +15,8 @@ function text(name: string): string {
 test('hot rankings carry independent cache keys per theme', async () => {
   const { hotRankingScopeKey } = await import('../packages/backend/src/events/hot.ts');
   assert.equal(hotRankingScopeKey(undefined), 'hot:ai');
-  assert.equal(hotRankingScopeKey('finance'), 'hot:finance');
-  assert.notEqual(hotRankingScopeKey('ai'), hotRankingScopeKey('finance'));
+  assert.equal(hotRankingScopeKey('macro'), 'hot:macro');
+  assert.notEqual(hotRankingScopeKey('ai'), hotRankingScopeKey('macro'));
 });
 
 test('story and fact theme migrations create theme membership tables', () => {
@@ -37,16 +37,16 @@ test('event scope defaults to ai and non-default themes require dedicated member
   const { eventScopeForTheme } = await import('../packages/backend/src/events/scope.ts');
   assert.equal(eventScopeForTheme(undefined).factsJoin, '');
   assert.equal(eventScopeForTheme('ai').storiesJoin, '');
-  assert.match(eventScopeForTheme('finance').factsJoin, /theme_facts/i);
-  assert.match(eventScopeForTheme('finance').storiesJoin, /theme_stories/i);
+  assert.match(eventScopeForTheme('macro').factsJoin, /theme_facts/i);
+  assert.match(eventScopeForTheme('macro').storiesJoin, /theme_stories/i);
 });
 
 test('non-default themes store grouping state in dedicated shadow tables', async () => {
   const { groupingStorageForTheme } = await import('../packages/backend/src/events/storage.ts');
   assert.equal(groupingStorageForTheme('ai').decisionsTable, 'grouping_decisions');
   assert.equal(groupingStorageForTheme('ai').overridesTable, 'grouping_overrides');
-  assert.equal(groupingStorageForTheme('finance').decisionsTable, 'theme_grouping_decisions');
-  assert.equal(groupingStorageForTheme('finance').overridesTable, 'theme_grouping_overrides');
+  assert.equal(groupingStorageForTheme('macro').decisionsTable, 'theme_grouping_decisions');
+  assert.equal(groupingStorageForTheme('macro').overridesTable, 'theme_grouping_overrides');
 });
 
 test('grouping shadow table migrations exist', () => {
@@ -67,8 +67,8 @@ test('manual grouping corrections branch to theme-specific publication and overr
     overridesTable: 'grouping_overrides',
     decisionsTable: 'grouping_decisions',
   });
-  assert.deepEqual(manualCorrectionScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(manualCorrectionScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
     overridesTable: 'theme_grouping_overrides',
     decisionsTable: 'theme_grouping_decisions',
@@ -83,8 +83,8 @@ test('hot signal reads branch standalone overrides to theme-specific storage', a
     publicationsTable: 'publications',
     overridesTable: 'grouping_overrides',
   });
-  assert.deepEqual(hotSignalScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(hotSignalScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
     overridesTable: 'theme_grouping_overrides',
   });
@@ -99,8 +99,8 @@ test('hot extra text and cover reads branch to theme-specific publication and si
     publicationsTable: 'publications',
     signalsThemeScoped: false,
   });
-  assert.deepEqual(hotAssetScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(hotAssetScope('macro'), {
+    themeId: 'macro',
     publicationsTable: 'theme_publications',
     signalsThemeScoped: true,
   });
@@ -108,8 +108,8 @@ test('hot extra text and cover reads branch to theme-specific publication and si
     themeId: 'ai',
     signalsThemeScoped: false,
   });
-  assert.deepEqual(heatSeriesScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(heatSeriesScope('macro'), {
+    themeId: 'macro',
     signalsThemeScoped: true,
   });
 });
@@ -118,7 +118,7 @@ test('hot extra text and cover reads branch to theme-specific publication and si
 test('signal-only queue planning fans out one grouping job per theme', async () => {
   const { planThemeSignalGroupJobs } = await import('../packages/backend/src/jobs/content.ts');
   assert.deepEqual(
-    planThemeSignalGroupJobs('article-1', ['ai', 'finance']).map((job: any) => ({
+    planThemeSignalGroupJobs('article-1', ['ai', 'macro']).map((job: any) => ({
       name: job.name,
       themeId: job.data.themeId,
       signalOnly: job.data.signalOnly,
@@ -126,7 +126,7 @@ test('signal-only queue planning fans out one grouping job per theme', async () 
     })),
     [
       { name: 'events.group', themeId: undefined, signalOnly: true, singletonKey: 'article-1' },
-      { name: 'events.group', themeId: 'finance', signalOnly: true, singletonKey: 'group:signal:article-1:finance' },
+      { name: 'events.group', themeId: 'macro', signalOnly: true, singletonKey: 'group:signal:article-1:macro' },
     ],
   );
 });
@@ -139,8 +139,8 @@ test('resetAutomatic limits non-default cleanup to theme-scoped memberships and 
     factDeleteScope: 'global',
     signalDeleteScope: 'global',
   });
-  assert.deepEqual(resetAutomaticScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(resetAutomaticScope('macro'), {
+    themeId: 'macro',
     factDeleteScope: 'theme_facts',
     signalDeleteScope: 'theme_stories',
   });
@@ -153,8 +153,8 @@ test('story consolidation related-link reads branch to theme-specific decision s
     themeId: 'ai',
     decisionsTable: 'grouping_decisions',
   });
-  assert.deepEqual(relatedStoryLinkScope('finance'), {
-    themeId: 'finance',
+  assert.deepEqual(relatedStoryLinkScope('macro'), {
+    themeId: 'macro',
     decisionsTable: 'theme_grouping_decisions',
   });
 });
