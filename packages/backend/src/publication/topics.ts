@@ -104,7 +104,9 @@ export function topicReadScope(themeId?: string | null) {
   };
 }
 
-const position = (slug: string, themeId?: string | null) => topicCatalog(themeId).bySlug.get(slug)?.position ?? Number.MAX_SAFE_INTEGER;
+/** Last place in an `int` column. A slug missing from this theme sorts after every real topic. */
+const POSITION_LAST = 2_147_483_647;
+const position = (slug: string, themeId?: string | null) => topicCatalog(themeId).bySlug.get(slug)?.position ?? POSITION_LAST;
 
 export function topicLinks(slugs: string[], themeId?: string | null): TopicLink[] {
   return slugs.map((slug) => findTopic(slug, themeId)).filter((topic): topic is Topic => !!topic).map((topic) => ({ slug: topic.slug, name: topic.name }));
@@ -125,8 +127,9 @@ function topicMatch(tags: ReturnType<typeof sql>, pattern: ReturnType<typeof sql
  * The topics report `p` belongs to, in topic order: its tags meet the topic's and, for a company, the
  * title names it or it is the report's only subject company.
  */
-export function topicMembership(topics: Topic[] = TOPICS, themeId?: string | null) {
-  const rows = topics.map((topic) => ({ slug: topic.slug, tags: topic.tags, pattern: topic.pattern, position: position(topic.slug, themeId) }));
+export function topicMembership(topics?: readonly Topic[], themeId?: string | null) {
+  const list = topics ?? topicsForTheme(themeId);
+  const rows = list.map((topic) => ({ slug: topic.slug, tags: topic.tags, pattern: topic.pattern, position: position(topic.slug, themeId) }));
   return sql`ARRAY(
     SELECT t.slug FROM jsonb_to_recordset(${sql.json(rows)}::jsonb) AS t(slug text, tags text[], pattern text, position int)
     WHERE ${topicMatch(sql`t.tags`, sql`t.pattern`)}

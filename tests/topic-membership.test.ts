@@ -50,3 +50,10 @@ test("topic lists and pool counts share the exact membership predicate", async (
     assert.deepEqual(page.items.map(row => row.id).sort(), visible.filter(row => row.selected !== false).map(row => row.id).sort(), `${topic.slug} selected`);
   }
 });
+
+test("topic membership for another theme does not overflow the position column", async () => {
+  const rows = await sql<{ topics: string[] }[]>`
+    SELECT ${topicMembership(undefined, "macro")} AS topics
+    FROM (SELECT '宏观样本'::text AS title, NULL::text AS original_title, ARRAY[]::text[] AS tags) p`;
+  assert.deepEqual(rows[0]!.topics, []);
+});

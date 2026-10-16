@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import test from 'node:test';
+import test, { after } from 'node:test';
+import { closeDb, sql } from '../packages/backend/src/db.ts';
+
+after(closeDb);
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const migration = (name: string) => path.join(ROOT, 'database/migrations', name);
@@ -146,6 +149,22 @@ test('resetAutomatic limits non-default cleanup to theme-scoped memberships and 
   });
 });
 
+
+test('hot ranking is written once for each enabled theme', async () => {
+  const at = new Date('2099-06-01T00:00:00Z');
+  const { computeEnabledHotRankings } = await import('../packages/backend/src/events/hot.ts');
+  try {
+    await sql`UPDATE themes SET enabled = false WHERE id = 'web3'`;
+    const results = await computeEnabledHotRankings(at);
+    assert.deepEqual(results.map((row) => row.themeId), ['ai', 'macro', 'quant']);
+    const stored = await sql<{ theme_id: string }[]>`
+      SELECT theme_id FROM hot_rankings WHERE computed_at = ${at} ORDER BY theme_id`;
+    assert.deepEqual(stored.map((row) => row.theme_id), ['ai', 'macro', 'quant']);
+  } finally {
+    await sql`UPDATE themes SET enabled = true WHERE id = 'web3'`;
+    await sql`DELETE FROM hot_rankings WHERE computed_at = ${at}`;
+  }
+});
 
 test('story consolidation related-link reads branch to theme-specific decision storage', async () => {
   const { relatedStoryLinkScope } = await import('../packages/backend/src/events/consolidate.ts');

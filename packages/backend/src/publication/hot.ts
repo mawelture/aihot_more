@@ -110,7 +110,7 @@ async function queryExtras(ranking: HotRanking, themeId?: string | null): Promis
   ]);
   return {
     faces: new Map(faces.map((f) => [f.name, f.icon_url ?? f.avatar])),
-    texts: new Map([...texts].map(([id, t]) => [id, { summary: t.digest ?? t.summary, latest: t.latest?.title ?? null }])),
+    texts: new Map([...texts].map(([id, t]) => [id, { summary: t.digest ?? t.summary ?? t.reportSummary, latest: t.latest?.title ?? null }])),
   };
 }
 

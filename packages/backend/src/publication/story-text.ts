@@ -13,6 +13,8 @@ export interface StoryText {
   summary: string | null;
   /** Its title, link and time come from the one report. */
   latest: { id: string; title: string; at: Date } | null;
+  /** Summary of the newest listed report, for a card that does not have a digest yet. */
+  reportSummary: string | null;
 }
 
 export function storyTextReadScope(themeId?: string | null) {
@@ -27,7 +29,7 @@ export async function storyTexts(storyIds: number[], now = new Date(), themeId?:
   if (storyIds.length === 0) return new Map();
   const scopedThemeId = themeIdOf(themeId);
   const rows = usesLegacyPublicationTables(scopedThemeId)
-    ? await sql<{ id: number; digest: string | null; digest_updated_at: Date | null; article_ids: string[] | null; inputs_hash: string | null; current: boolean; summary: string | null; latest_id: string | null; latest_title: string; latest_at: Date }[]>`
+    ? await sql<{ id: number; digest: string | null; digest_updated_at: Date | null; article_ids: string[] | null; inputs_hash: string | null; current: boolean; summary: string | null; latest_id: string | null; latest_title: string; latest_at: Date; latest_summary: string | null }[]>`
       SELECT st.id, st.digest, st.digest_updated_at, saved.article_ids, saved.inputs_hash,
         CASE WHEN EXISTS (
           SELECT 1 FROM facts f JOIN fact_articles fa ON fa.fact_id = f.id JOIN publications p ON p.article_id = fa.article_id
@@ -38,17 +40,17 @@ export async function storyTexts(storyIds: number[], now = new Date(), themeId?:
           WHERE NOT EXISTS (SELECT 1 FROM facts f JOIN fact_articles fa ON fa.fact_id = f.id JOIN publications p ON p.article_id = fa.article_id
             WHERE f.story_id = st.id AND p.theme_id = ${scopedThemeId} AND p.article_id = input.article_id AND ${evidenceCondition()} AND ${listedCondition(now)})
         ) AS current,
-        latest.id AS latest_id, latest.title AS latest_title, latest.at AS latest_at
+        latest.id AS latest_id, latest.title AS latest_title, latest.summary AS latest_summary, latest.at AS latest_at
       FROM stories st LEFT JOIN LATERAL (
         SELECT article_ids, inputs_hash, digest FROM story_digests WHERE story_id = st.id ORDER BY version DESC LIMIT 1
       ) saved ON true LEFT JOIN LATERAL (
-        SELECT p.article_id AS id, p.title, coalesce(p.published_at, p.discovered_at) AS at
+        SELECT p.article_id AS id, p.title, p.summary, coalesce(p.published_at, p.discovered_at) AS at
         FROM facts f JOIN fact_articles fa ON fa.fact_id = f.id JOIN publications p ON p.article_id = fa.article_id
         WHERE f.story_id = st.id AND p.theme_id = ${scopedThemeId} AND ${evidenceCondition()} AND ${listedCondition(now)}
         ORDER BY coalesce(p.published_at, p.discovered_at) DESC, p.article_id LIMIT 1
       ) latest ON true
       WHERE st.id = ANY(${storyIds}::bigint[])`
-    : await sql<{ id: number; digest: string | null; digest_updated_at: Date | null; article_ids: string[] | null; inputs_hash: string | null; current: boolean; summary: string | null; latest_id: string | null; latest_title: string; latest_at: Date }[]>`
+    : await sql<{ id: number; digest: string | null; digest_updated_at: Date | null; article_ids: string[] | null; inputs_hash: string | null; current: boolean; summary: string | null; latest_id: string | null; latest_title: string; latest_at: Date; latest_summary: string | null }[]>`
       SELECT st.id, st.digest, st.digest_updated_at, saved.article_ids, saved.inputs_hash,
         CASE WHEN EXISTS (
           SELECT 1 FROM facts f JOIN fact_articles fa ON fa.fact_id = f.id JOIN theme_publications p ON p.article_id = fa.article_id
@@ -59,11 +61,11 @@ export async function storyTexts(storyIds: number[], now = new Date(), themeId?:
           WHERE NOT EXISTS (SELECT 1 FROM facts f JOIN fact_articles fa ON fa.fact_id = f.id JOIN theme_publications p ON p.article_id = fa.article_id
             WHERE f.story_id = st.id AND p.theme_id = ${scopedThemeId} AND p.article_id = input.article_id AND ${evidenceCondition()} AND ${listedCondition(now)})
         ) AS current,
-        latest.id AS latest_id, latest.title AS latest_title, latest.at AS latest_at
+        latest.id AS latest_id, latest.title AS latest_title, latest.summary AS latest_summary, latest.at AS latest_at
       FROM stories st LEFT JOIN LATERAL (
         SELECT article_ids, inputs_hash, digest FROM story_digests WHERE story_id = st.id ORDER BY version DESC LIMIT 1
       ) saved ON true LEFT JOIN LATERAL (
-        SELECT p.article_id AS id, p.title, coalesce(p.published_at, p.discovered_at) AS at
+        SELECT p.article_id AS id, p.title, p.summary, coalesce(p.published_at, p.discovered_at) AS at
         FROM facts f JOIN fact_articles fa ON fa.fact_id = f.id JOIN theme_publications p ON p.article_id = fa.article_id
         WHERE f.story_id = st.id AND p.theme_id = ${scopedThemeId} AND ${evidenceCondition()} AND ${listedCondition(now)}
         ORDER BY coalesce(p.published_at, p.discovered_at) DESC, p.article_id LIMIT 1
@@ -80,6 +82,7 @@ export async function storyTexts(storyIds: number[], now = new Date(), themeId?:
       digestUpdatedAt: current ? r.digest_updated_at : null,
       summary: r.summary,
       latest: r.latest_id ? { id: r.latest_id, title: r.latest_title, at: r.latest_at } : null,
+      reportSummary: r.latest_id && r.latest_summary ? r.latest_summary : null,
     }];
   }));
 }

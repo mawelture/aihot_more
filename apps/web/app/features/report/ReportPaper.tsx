@@ -47,7 +47,7 @@ function Masthead({ report, index, quiet }: { report: ReportDetail; index: Repor
             <span className="sr-only">
               {before(withSubject(label, subject), label)}{label} · {dateLine(report.kind, report.key)}
             </span>
-            <Nameplate which={report.kind} className="block h-[44px] w-auto @[520px]:h-[58px] @[880px]:h-[74px] @[1040px]:h-[84px]" />
+            <Nameplate which={report.kind} subject={subject} className="text-[44px] @[520px]:text-[58px] @[880px]:text-[74px] @[1040px]:text-[84px]" />
           </h1>
           <p className="mt-3 text-[11.5px] tracking-[0.36em] text-ink-4 @[880px]:mt-4 @[880px]:text-[12.5px]">{REPORTS.imprint}</p>
         </div>

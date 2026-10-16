@@ -2,7 +2,7 @@
 import type { PgBoss } from "pg-boss";
 import { sql } from "../db.ts";
 import { republishSource } from "../publication/publish.ts";
-import { computeHotRanking } from "../events/hot.ts";
+import { computeEnabledHotRankings } from "../events/hot.ts";
 import { emit } from "../modules.ts";
 import { QUEUES, work } from "./queue.ts";
 
@@ -19,8 +19,8 @@ export async function registerPublicationJobs(boss: PgBoss) {
     await progress(sourceId, { status: "running", done: 0, total: null, startedAt });
     const result = await republishSource(sourceId, (done, total) => progress(sourceId, { status: "running", done, total, startedAt }));
     if (result.reduced > 0) {
-      // The hot board may show one of the source's articles: re-rank now rather than within five minutes.
-      await computeHotRanking();
+      // The hot board may show one of the source's articles: re-rank every enabled theme now rather than within five minutes.
+      await computeEnabledHotRankings();
     }
     // Names and redistribution rights are also read live, without changing selected/body-mode.
     if (result.total > 0) await emit("sourceRepublished", { sourceId });

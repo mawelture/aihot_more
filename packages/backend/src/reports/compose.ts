@@ -17,6 +17,7 @@ import { shutdownSignal } from "../jobs/queue.ts";
 import { emit } from "../modules.ts";
 import { arrangeDailyForTheme, candidates, dailyEdition, periodEntries, sectionOf, sectionOrderForTheme, type Candidate, type EditionEntry } from "./edition.ts";
 import { themeIdOf } from "../publication/scope.ts";
+import { enabledThemeIds } from "../themes/runtime.ts";
 import { reportStorageForTheme, usesLegacyReportTables } from "./storage.ts";
 import { loadThemePack } from "../../../../themes/index.ts";
 
@@ -378,5 +379,27 @@ export async function composeDueReports(now = new Date(), limit = 8, themeId?: s
     }
   }
   if (failed.length) throw new Error(`reports: ${failed.join(", ")} failed${generated.length ? `; ${generated.join(", ")} written` : ""}`);
+  return { generated, failed };
+}
+
+/**
+ * The scheduled run for every enabled theme. Each theme keeps its own catch-up limit, and a theme that
+ * fails (nothing judged, or a week with no dailies) does not stop the others. A disabled theme is left
+ * as it is. The run still fails when any theme failed, so the next half hour retries it.
+ */
+export async function composeEnabledDueReports(now = new Date(), limit = 8): Promise<{ generated: string[]; failed: string[] }> {
+  const generated: string[] = [];
+  const failed: string[] = [];
+  for (const themeId of await enabledThemeIds()) {
+    try {
+      const result = await composeDueReports(now, limit, themeId);
+      generated.push(...result.generated.map((item) => `${themeId}:${item}`));
+    } catch (error) {
+      const detail = error instanceof Error ? error.message.replace(/^reports: /, "") : String(error);
+      failed.push(`${themeId} (${detail})`);
+      console.error(JSON.stringify({ level: "error", msg: "theme reports failed", themeId, error: logError(error) }));
+    }
+  }
+  if (failed.length) throw new Error(`reports: ${failed.join("; ")}`);
   return { generated, failed };
 }

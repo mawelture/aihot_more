@@ -5,7 +5,7 @@ import { SITE } from "@aihot/site";
 import { sql } from "../db.ts";
 import { cachedByKey, SHARED_ONLY } from "../lib/cache.ts";
 import { proxiedImage, proxiedImageSet } from "../media/imgproxy.ts";
-import { behindSources, currentSignals, heatSeries, sourceClocks, type HotRanking } from "../events/hot.ts";
+import { behindSources, currentSignals, heatIndex, heatRows, heatSeries, sourceClocks, type HotRanking } from "../events/hot.ts";
 import { pickRepresentative, REPRESENTATIVE_COLUMNS, type RepresentativeIdentity } from "./representative.ts";
 import { compositeCondition, evidenceCondition, listedCondition, storyReportCondition, themeIdOf } from "./scope.ts";
 import { publicationStorageForTheme, usesLegacyPublicationTables } from "./storage.ts";
@@ -226,17 +226,18 @@ const SPARK_HOURS = 24;
 /** Hourly heat of the ranked stories over the day before the ranking, one slot per hour. */
 async function sparklines(storyIds: number[], at: Date): Promise<Map<number, Array<number | null>>> {
   const end = Math.floor(at.getTime() / 3600000) * 3600000;
-  const start = end - SPARK_HOURS * 3600000;
-  const rows = storyIds.length
-    ? await sql<{ story_id: number; hour: Date; heat: string }[]>`
-        SELECT story_id, hour, heat FROM story_heat_hourly
-        WHERE story_id = ANY(${storyIds}::bigint[]) AND complete AND hour >= ${new Date(start)} AND hour <= ${new Date(end)}`
-    : [];
   const out = new Map<number, Array<number | null>>(storyIds.map((id) => [id, Array.from({ length: SPARK_HOURS + 1 }, () => null)]));
-  for (const r of rows) {
-    const slot = Math.round((r.hour.getTime() - start) / 3600000);
-    const line = out.get(Number(r.story_id));
-    if (line && slot >= 0 && slot <= SPARK_HOURS) line[slot] = Number(r.heat);
+  if (!storyIds.length) return out;
+  // Recompute from the signals. A missed hourly snapshot would otherwise leave a hole, and a hole
+  // draws as a dot instead of a line. An hour whose sources had not caught up stays empty.
+  const clocks = await sourceClocks();
+  for (let slot = 0; slot <= SPARK_HOURS; slot++) {
+    const t = end - (SPARK_HOURS - slot) * 3600000;
+    const rows = await heatRows(new Date(t), behindSources(clocks, t, t === end), storyIds);
+    for (const row of rows) {
+      const line = out.get(Number(row.story_id));
+      if (line && Number(row.behind_participants) === 0) line[slot] = heatIndex(Number(row.heat));
+    }
   }
   return out;
 }

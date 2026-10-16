@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
+import { editionAt, sql, tag } from './setup.ts';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const migration = (name: string) => path.join(ROOT, 'database/migrations', name);
@@ -117,4 +118,41 @@ test('report edition candidates branch to theme-specific publication and report 
     publicationsTable: 'theme_publications',
     reportsTable: 'theme_reports',
   });
+});
+
+test('scheduled reports are composed for every enabled theme', async () => {
+  const sourceId = `report-themes-${tag()}`;
+  const articleId = `report-themes-a-${tag()}`;
+  const date = '2024-06-04';
+  const at = editionAt('daily', date, -12 * 3600);
+  const now = editionAt('daily', date, 3600);
+  const url = `https://example.com/${articleId}`;
+  await sql`INSERT INTO sources (id, name, kind, tier) VALUES (${sourceId}, 'Report themes', 'rss', 'T1')`;
+  await sql`INSERT INTO articles (id, source_id, identity_key, url, title, discovered_at, timeline_at)
+    VALUES (${articleId}, ${sourceId}, ${articleId}, ${url}, '宏观样本', ${at}, ${at})`;
+  await sql`INSERT INTO theme_publications (theme_id, article_id, title, source_id, channel, url, discovered_at, timeline_at, sort_at, eligible, selected, visible_after, visibility, score)
+    VALUES ('macro', ${articleId}, '宏观样本', ${sourceId}, 'news', ${url}, ${at}, ${at}, ${at}, true, true, ${at}, 'public', 90)`;
+  const { composeEnabledDueReports } = await import('../packages/backend/src/reports/compose.ts');
+  try {
+    await sql`UPDATE themes SET enabled = false WHERE id = 'web3'`;
+    await assert.rejects(composeEnabledDueReports(now), (error: Error) => {
+      assert.match(error.message, /^reports: /);
+      assert.match(error.message, /ai \(/);
+      assert.match(error.message, /macro \(weekly:.*failed; daily:2024-06-04 written\)/);
+      assert.match(error.message, /quant \(/);
+      assert.doesNotMatch(error.message, /web3/);
+      return true;
+    });
+    const rows = await sql<{ theme_id: string; kind: string; key: string }[]>`
+      SELECT theme_id, kind, key FROM theme_reports ORDER BY theme_id, kind, key`;
+    assert.deepEqual(rows.map((row) => ({ theme_id: row.theme_id, kind: row.kind, key: row.key })), [
+      { theme_id: 'macro', kind: 'daily', key: date },
+    ]);
+    assert.equal((await sql`SELECT 1 FROM reports`).length, 0);
+  } finally {
+    await sql`UPDATE themes SET enabled = true WHERE id = 'web3'`;
+    await sql`DELETE FROM theme_reports WHERE theme_id = 'macro' AND key = ${date}`;
+    await sql`DELETE FROM articles WHERE id = ${articleId}`;
+    await sql`DELETE FROM sources WHERE id = ${sourceId}`;
+  }
 });

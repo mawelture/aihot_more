@@ -52,7 +52,7 @@ async function loadRow(id: string, themeId?: string | null): Promise<DetailRow |
   const scopedThemeId = themeIdOf(themeId);
   const [row] = await sql<DetailRow[]>`
     SELECT ${ITEM_COLUMNS}, a.body_html, a.body_text, a.body_status, tr.body_html AS tr_html, tr.complete AS tr_complete,
-      ${topicMembership()} AS topics
+      ${topicMembership(undefined, scopedThemeId)} AS topics
     ${itemFrom(scopedThemeId)}
     WHERE p.theme_id = ${scopedThemeId} AND p.article_id = ${id}`;
   return row ?? null;

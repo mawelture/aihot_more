@@ -3,6 +3,7 @@
 // 24-hour half-life, and the source time (not collection time) places evidence in the window.
 import { COMMUNITY_FEEDS } from "@aihot/site";
 import { sql, type Db } from "../db.ts";
+import { enabledThemeIds } from "../themes/runtime.ts";
 import { pickRepresentative, REPRESENTATIVE_COLUMNS, type RepresentativeIdentity } from "../publication/representative.ts";
 import { evidenceCondition, listedCondition, themeIdOf } from "../publication/scope.ts";
 import { publicationStorageForTheme, usesLegacyPublicationTables } from "../publication/storage.ts";
@@ -326,6 +327,15 @@ export async function computeHotRanking(at = new Date(), themeId?: string | null
   // Keep a bounded history of rankings.
   await sql`DELETE FROM hot_rankings WHERE theme_id = ${scopedThemeId} AND computed_at < now() - interval '30 days'`;
   return { id: row!.id, entries: entries.length };
+}
+
+/** One ranking per enabled theme. The five-minute job and a source republish both use this. */
+export async function computeEnabledHotRankings(at = new Date()): Promise<Array<{ themeId: string; id: number; entries: number }>> {
+  const results: Array<{ themeId: string; id: number; entries: number }> = [];
+  for (const themeId of await enabledThemeIds()) {
+    results.push({ themeId, ...(await computeHotRanking(at, themeId)) });
+  }
+  return results;
 }
 
 /**
