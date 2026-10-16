@@ -104,7 +104,7 @@ The same thing happens once: the official site posts it, ten outlets repeat it, 
   <img src="docs/assets/shots-light.png" alt="The daily selection on the home page, and the river of sources on the about page" width="100%">
 </picture>
 
-<p align="center"><sub>Screenshots from a local site running on the demo sources, under the default name MyHOT.</sub></p>
+<p align="center"><sub>Screenshots from a local site running on the demo sources, under the default name MoreHOT.</sub></p>
 
 ## Run it
 
